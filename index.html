@@ -110,6 +110,14 @@
 
       footer { padding: 28px 0; color: var(--muted); font-size: 0.85rem; text-align: center; }
 
+      /* Lightbox */
+      .lightbox { position: fixed; inset: 0; background: rgba(15,12,9,0.88); display: none; align-items: center; justify-content: center; flex-direction: column; z-index: 100; padding: 24px; }
+      .lightbox.open { display: flex; }
+      .lightbox figure { max-width: min(1100px, 100%); text-align: center; }
+      .lightbox img { max-width: 100%; max-height: 82vh; border-radius: 10px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+      .lightbox figcaption { color: #e8ddd0; font-size: 0.95rem; margin-top: 14px; }
+      .lightbox-close { position: absolute; top: 18px; right: 22px; background: none; border: none; color: #fff; font-size: 1.6rem; cursor: pointer; }
+
       @media (max-width: 720px) {
         .about-grid { grid-template-columns: 1fr; }
         nav a { margin-left: 14px; font-size: 0.88rem; }
@@ -243,5 +251,45 @@
     </section>
 
     <footer>© 2026 Dieter Benoot — www.benoot.be</footer>
+    <div class="lightbox" id="lightbox" aria-hidden="true">
+      <figure>
+        <img src="" alt="" />
+        <figcaption></figcaption>
+      </figure>
+      <button class="lightbox-close" aria-label="Sluiten">&#10005;</button>
+    </div>
+    <script>
+      (function () {
+        var lb = document.getElementById("lightbox");
+        var lbImg = lb.querySelector("img");
+        var lbCap = lb.querySelector("figcaption");
+        function openLightbox(src, alt, cap) {
+          lbImg.src = src; lbImg.alt = alt || ""; lbCap.textContent = cap || "";
+          lb.classList.add("open"); lb.setAttribute("aria-hidden", "false");
+          document.body.style.overflow = "hidden";
+        }
+        function closeLightbox() {
+          lb.classList.remove("open"); lb.setAttribute("aria-hidden", "true");
+          document.body.style.overflow = "";
+        }
+        document.querySelectorAll(".shot img, .card .thumb img").forEach(function (img) {
+          var holder = img.closest(".shot") || img.closest(".card");
+          holder.style.cursor = "zoom-in";
+          holder.addEventListener("click", function () {
+            var cap = "";
+            if (holder.classList.contains("shot")) {
+              var fc = holder.querySelector("figcaption");
+              cap = fc ? fc.textContent : "";
+            } else {
+              var h = holder.querySelector("h3");
+              cap = h ? h.textContent : "";
+            }
+            openLightbox(img.src, img.alt, cap);
+          });
+        });
+        lb.addEventListener("click", function (e) { if (e.target !== lbImg) closeLightbox(); });
+        document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeLightbox(); });
+      })();
+    </script>
   </body>
 </html>
