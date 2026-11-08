@@ -317,7 +317,7 @@
     <script type="module">
       import * as THREE from "three";
       import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-      import { ThreeMFLoader } from "three/addons/loaders/3MFLoader.js";
+      import { STLLoader } from "three/addons/loaders/STLLoader.js";
 
       const canvas = document.getElementById("viewer-canvas");
       const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
@@ -342,14 +342,16 @@
       controls.autoRotate = true;
       controls.autoRotateSpeed = 1.4;
 
-      new ThreeMFLoader().load(
-        "/web_images/Dagplanning%203.3mf",
-        function (obj) {
-          const box = new THREE.Box3().setFromObject(obj);
+      new STLLoader().load(
+        "/web_images/Dagplanning%203.stl",
+        function (geom) {
+          geom.computeVertexNormals();
+          const mesh = new THREE.Mesh(geom, new THREE.MeshStandardMaterial({ color: 0xf59f6e, roughness: 0.55, metalness: 0.05 }));
+          const box = new THREE.Box3().setFromObject(mesh);
           const size = box.getSize(new THREE.Vector3());
           const center = box.getCenter(new THREE.Vector3());
-          obj.position.sub(center);
-          scene.add(obj);
+          mesh.position.sub(center);
+          scene.add(mesh);
           const maxDim = Math.max(size.x, size.y, size.z);
           const dist = maxDim * 1.9;
           camera.position.set(dist * 0.35, dist * 0.45, dist);
