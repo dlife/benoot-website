@@ -6,266 +6,186 @@
     <meta name="description" content="3D-printwerk van Dieter Benoot — functionele prints in ASA, ABS en TPU, van ontwerp tot eindresultaat." />
     <title>Dieter Benoot — 3D-printwerk</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='20' y='15' width='60' height='40' rx='6' fill='%23cf6a2e'/><rect x='30' y='55' width='40' height='30' rx='4' fill='%23a8501f'/><rect x='38' y='63' width='24' height='4' fill='%23fffdf9'/></svg>" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ink: "#2b2118",
+              muted: "#7a6a58",
+              cream: "#faf5ee",
+              card: "#fffdf9",
+              accent: "#cf6a2e",
+              deep: "#a8501f",
+              soft: "#f9e8d7",
+              line: "#eddfc9"
+            },
+            fontFamily: { serif: ["Georgia", "Times New Roman", "serif"] }
+          }
+        }
+      };
+    </script>
     <style>
-      :root {
-        --ink: #2b2118;
-        --muted: #7a6a58;
-        --bg: #faf5ee;
-        --card: #fffdf9;
-        --accent: #cf6a2e;
-        --accent-deep: #a8501f;
-        --accent-soft: #f9e8d7;
-        --line: #eddfc9;
-        --radius: 16px;
-      }
-      * { box-sizing: border-box; margin: 0; padding: 0; }
-      body {
-        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-        color: var(--ink);
-        background: var(--bg);
-        line-height: 1.65;
-      }
-      h1, h2, h3 { font-family: Georgia, "Times New Roman", serif; letter-spacing: 0.01em; }
-      .wrap { max-width: 1060px; margin: 0 auto; padding: 0 24px; }
-
-      header {
-        border-bottom: 1px solid var(--line);
-        background: var(--card);
-        position: sticky; top: 0; z-index: 10;
-      }
-      .nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; }
-      .logo { font-weight: 700; font-size: 1.05rem; letter-spacing: 0.02em; text-decoration: none; color: var(--ink); }
-      .logo span { color: var(--accent); }
-      nav a { color: var(--muted); text-decoration: none; margin-left: 22px; font-size: 0.95rem; }
-      nav a:hover { color: var(--ink); }
-
-      .hero { padding: 72px 0 56px; }
-      .hero .tag {
-        display: inline-block; background: var(--accent-soft); color: var(--accent);
-        font-size: 0.8rem; font-weight: 600; padding: 4px 12px; border-radius: 999px;
-        margin-bottom: 18px;
-      }
-      .hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1.15; max-width: 640px; }
-      .hero h1 em { font-style: normal; color: var(--accent); }
-      .hero p { color: var(--muted); max-width: 560px; margin-top: 16px; font-size: 1.05rem; }
-
-      section { padding: 48px 0; }
-      h2 { font-size: 1.4rem; margin-bottom: 24px; }
-      .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-      .card {
-        background: var(--card); border: 1px solid var(--line);
-        border-radius: var(--radius); overflow: hidden;
-        transition: transform 0.15s ease, box-shadow 0.15s ease;
-      }
-      .card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(16,20,24,0.08); }
-      .card .thumb { height: 170px; display: flex; align-items: center; justify-content: center; }
-      .card .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-      .card .body { padding: 18px 20px 22px; }
-      .card h3 { font-size: 1.05rem; margin-bottom: 6px; }
-      .card p { color: var(--muted); font-size: 0.92rem; }
-      .chips { margin-top: 12px; }
-      .chip {
-        display: inline-block; font-size: 0.72rem; font-weight: 600;
-        background: #f1f4f7; color: var(--muted); border-radius: 999px; padding: 3px 10px; margin: 0 6px 6px 0;
-      }
-
-      .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 18px; }
-      .shot {
-        background: var(--accent-soft); border-radius: var(--radius);
-        overflow: hidden; border: 1px solid var(--line);
-        transition: transform 0.15s ease, box-shadow 0.15s ease;
-      }
-      .shot:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(168,80,31,0.15); }
-      .shot .img { height: 200px; display: flex; align-items: center; justify-content: center; }
-      .shot .img img { width: 100%; height: 100%; object-fit: cover; display: block; }
-      .shot figcaption { padding: 12px 16px 15px; font-size: 0.85rem; color: var(--muted); background: var(--card); }
-      .shot figcaption b { display: block; color: var(--ink); font-size: 0.92rem; margin-bottom: 2px; }
-      .gallery-note { color: var(--muted); font-size: 0.88rem; margin-top: 18px; }
-
-      /* Timelapse */
-      .tl video { width: 100%; display: block; border-radius: var(--radius); border: 1px solid var(--line); background: #000; }
-      .tl figcaption { color: var(--muted); font-size: 0.88rem; margin-top: 10px; }
-
-      .about { background: var(--card); border-block: 1px solid var(--line); }
-      .about-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 32px; align-items: start; }
-      .about ul { list-style: none; margin-top: 14px; }
-      .about li { padding: 6px 0 6px 26px; position: relative; color: var(--muted); font-size: 0.97rem; }
-      .about li::before { content: "→"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
-      .stat { background: var(--accent-soft); border-radius: var(--radius); padding: 22px; }
-      .stat + .stat { margin-top: 16px; }
-      .stat b { display: block; font-size: 1.5rem; color: var(--accent); }
-      .stat span { color: var(--muted); font-size: 0.9rem; }
-
-      .cta {
-        background: linear-gradient(135deg, #f18022, #e8590c);
-        color: #fff; border-radius: var(--radius); padding: 40px 36px; text-align: center;
-      }
-      .cta h2 { color: #fff; }
-      .cta p { max-width: 520px; margin: 0 auto 22px; color: #ffe9db; }
-      .btn {
-        display: inline-block; background: #fff; color: var(--accent);
-        font-weight: 700; text-decoration: none; padding: 12px 28px; border-radius: 999px;
-      }
-      .btn:hover { background: #fff4ec; }
-
-      footer { padding: 28px 0; color: var(--muted); font-size: 0.85rem; text-align: center; }
-
-      /* Lightbox */
+      /* Lightbox (klein restant custom CSS naast Tailwind) */
       .lightbox { position: fixed; inset: 0; background: rgba(15,12,9,0.88); display: none; align-items: center; justify-content: center; flex-direction: column; z-index: 100; padding: 24px; }
       .lightbox.open { display: flex; }
       .lightbox figure { max-width: min(1100px, 100%); text-align: center; }
       .lightbox img { max-width: 100%; max-height: 82vh; border-radius: 10px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
       .lightbox figcaption { color: #e8ddd0; font-size: 0.95rem; margin-top: 14px; }
       .lightbox-close { position: absolute; top: 18px; right: 22px; background: none; border: none; color: #fff; font-size: 1.6rem; cursor: pointer; }
-
-      /* 3D-viewer */
-      .viewer { position: relative; background: #17120d; border-radius: var(--radius); border: 1px solid var(--line); overflow: hidden; height: 480px; }
-      .viewer canvas { display: block; width: 100%; height: 100%; }
-      .viewer-hint { position: absolute; top: 14px; left: 16px; color: #cfc0ad; font-size: 0.8rem; background: rgba(0,0,0,0.4); padding: 4px 12px; border-radius: 999px; }
-      .viewer figcaption { position: absolute; bottom: 0; left: 0; right: 0; margin: 0; padding: 14px 18px; color: #e8ddd0; font-size: 0.9rem; background: linear-gradient(transparent, rgba(0,0,0,0.6)); }
-
-      @media (max-width: 720px) {
-        .about-grid { grid-template-columns: 1fr; }
-        nav a { margin-left: 14px; font-size: 0.88rem; }
-      }
     </style>
   </head>
-  <body>
-    <header>
-      <div class="wrap nav">
-        <a class="logo" href="#">Dieter Benoot <span>· 3D-print</span></a>
-        <nav>
-          <a href="#werk">Werk</a>
-          <a href="#galerij">Galerij</a>
-          <a href="#over">Over</a>
-          <a href="#contact">Contact</a>
+  <body class="bg-cream text-ink font-sans leading-relaxed">
+
+    <header class="sticky top-0 z-10 bg-card border-b border-line">
+      <div class="max-w-[1060px] mx-auto px-6 py-4 flex items-center justify-between">
+        <a class="logo font-bold text-[1.05rem] tracking-wide text-ink no-underline" href="#">Dieter Benoot <span class="text-accent">&middot; 3D-print</span></a>
+        <nav class="space-x-[22px] max-md:space-x-3.5">
+          <a class="text-muted hover:text-ink no-underline text-[0.95rem] max-md:text-[0.88rem]" href="#werk">Werk</a>
+          <a class="text-muted hover:text-ink no-underline text-[0.95rem] max-md:text-[0.88rem]" href="#galerij">Galerij</a>
+          <a class="text-muted hover:text-ink no-underline text-[0.95rem] max-md:text-[0.88rem]" href="#over">Over</a>
+          <a class="text-muted hover:text-ink no-underline text-[0.95rem] max-md:text-[0.88rem]" href="#contact">Contact</a>
         </nav>
       </div>
     </header>
 
-    <div class="wrap hero">
-      <span class="tag">FDM · Bambu Lab X2D &amp; H2C</span>
-      <h1>Hoi! Ik ben Dieter — ik maak 3D-prints die <em>precies passen</em>.</h1>
-      <p>Kapot onderdeel dat nergens te vinden is? Iets dat net wat beter moet zitten? Van je eerste schets of meting tot een stevig eindstuk in ASA, ABS of TPU — ik denk graag met je mee.</p>
+    <div class="max-w-[1060px] mx-auto px-6 pt-[72px] pb-14">
+      <span class="inline-block bg-soft text-accent text-[0.8rem] font-semibold px-3 py-1 rounded-full mb-[18px]">FDM &middot; Bambu Lab X2D &amp; H2C</span>
+      <h1 class="font-serif text-[clamp(1.8rem,4vw,2.8rem)] leading-[1.15] max-w-[640px]">Hoi! Ik ben Dieter — ik maak 3D-prints die <em class="not-italic text-accent">precies passen</em>.</h1>
+      <p class="text-muted max-w-[560px] mt-4 text-[1.05rem]">Kapot onderdeel dat nergens te vinden is? Iets dat net wat beter moet zitten? Van je eerste schets of meting tot een stevig eindstuk in ASA, ABS of TPU — ik denk graag met je mee.</p>
     </div>
 
-    <section id="werk" class="wrap">
-      <h2>Recent werk</h2>
-      <div class="grid">
-        <div class="card">
-          <div class="thumb">
-            <img src="/web_images/Batterij_deksel_mini.jpeg" alt="Batterijafdekplaat in de classic Mini" loading="lazy" />
+    <section id="werk" class="max-w-[1060px] mx-auto px-6 py-12">
+      <h2 class="font-serif text-[1.4rem] mb-6">Recent werk</h2>
+      <div class="grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(280px,1fr))]">
+        <div class="card bg-card border border-line rounded-2xl overflow-hidden transition duration-150 hover:-translate-y-[3px] hover:shadow-[0_8px_24px_rgba(16,20,24,0.08)]">
+          <div class="thumb h-[170px] flex items-center justify-center">
+            <img src="/web_images/Batterij_deksel_mini.jpeg" alt="Batterijafdekplaat in de classic Mini" loading="lazy" class="w-full h-full object-cover" />
           </div>
-          <div class="body">
-            <h3>Batterijafdekplaat classic Mini</h3>
-            <p>Volledig parametrisch deksel in ASA voor de batterijkuip in de kofferbak, met geïntegreerde TPU-pads en klembevestiging.</p>
-            <div class="chips"><span class="chip">FreeCAD</span><span class="chip">ASA + TPU</span><span class="chip">Parametrisch</span></div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="thumb">
-            <img src="/web_images/OmvormerKoeling.jpeg" alt="Venturi-passtuk op de omvormer" loading="lazy" />
-          </div>
-          <div class="body">
-            <h3>Venturi-passtuk omvormer</h3>
-            <p>Passtuk om een 140 mm PC-fan op de omvormer te monteren, met venturi-geometrie en maximale hoogte van 95 mm, geprint in ABS.</p>
-            <div class="chips"><span class="chip">FreeCAD</span><span class="chip">ABS</span><span class="chip">Venturi</span></div>
+          <div class="px-5 pt-[18px] pb-[22px]">
+            <h3 class="font-serif text-[1.05rem] mb-1.5">Batterijafdekplaat classic Mini</h3>
+            <p class="text-muted text-[0.92rem]">Volledig parametrisch deksel in ASA voor de batterijkuip in de kofferbak, met geïntegreerde TPU-pads en klembevestiging.</p>
+            <div class="mt-3">
+              <span class="inline-block text-[0.72rem] font-semibold bg-[#f1f4f7] text-muted rounded-full px-2.5 py-[3px] mr-1.5 mb-1.5">FreeCAD</span>
+              <span class="inline-block text-[0.72rem] font-semibold bg-[#f1f4f7] text-muted rounded-full px-2.5 py-[3px] mr-1.5 mb-1.5">ASA + TPU</span>
+              <span class="inline-block text-[0.72rem] font-semibold bg-[#f1f4f7] text-muted rounded-full px-2.5 py-[3px] mr-1.5 mb-1.5">Parametrisch</span>
+            </div>
           </div>
         </div>
-        <div class="card">
-          <div class="thumb">
+        <div class="card bg-card border border-line rounded-2xl overflow-hidden transition duration-150 hover:-translate-y-[3px] hover:shadow-[0_8px_24px_rgba(16,20,24,0.08)]">
+          <div class="thumb h-[170px] flex items-center justify-center">
+            <img src="/web_images/OmvormerKoeling.jpeg" alt="Venturi-passtuk op de omvormer" loading="lazy" class="w-full h-full object-cover" />
+          </div>
+          <div class="px-5 pt-[18px] pb-[22px]">
+            <h3 class="font-serif text-[1.05rem] mb-1.5">Venturi-passtuk omvormer</h3>
+            <p class="text-muted text-[0.92rem]">Passtuk om een 140 mm PC-fan op de omvormer te monteren, met venturi-geometrie en maximale hoogte van 95 mm, geprint in ABS.</p>
+            <div class="mt-3">
+              <span class="inline-block text-[0.72rem] font-semibold bg-[#f1f4f7] text-muted rounded-full px-2.5 py-[3px] mr-1.5 mb-1.5">FreeCAD</span>
+              <span class="inline-block text-[0.72rem] font-semibold bg-[#f1f4f7] text-muted rounded-full px-2.5 py-[3px] mr-1.5 mb-1.5">ABS</span>
+              <span class="inline-block text-[0.72rem] font-semibold bg-[#f1f4f7] text-muted rounded-full px-2.5 py-[3px] mr-1.5 mb-1.5">Venturi</span>
+            </div>
+          </div>
+        </div>
+        <div class="card bg-card border border-line rounded-2xl overflow-hidden transition duration-150 hover:-translate-y-[3px] hover:shadow-[0_8px_24px_rgba(16,20,24,0.08)]">
+          <div class="thumb h-[170px] flex items-center justify-center">
             <svg width="120" height="100" viewBox="0 0 120 100" fill="none">
               <path d="M25 80 L25 40 Q25 25 40 25 L80 25 Q95 25 95 40 L95 80 Z" fill="#ffe3cd" stroke="#f59f6e" stroke-width="3"/>
               <path d="M25 52 L95 52 M25 66 L95 66" stroke="#f59f6e" stroke-width="2"/>
             </svg>
           </div>
-          <div class="body">
-            <h3>Mandjes met hex ribbed patroon</h3>
-            <p>Op maat gegenereerde opbergmandjes (universal basket generator) voor de dagplanning van school — stevig en in een echte hex structuur.</p>
-            <div class="chips"><span class="chip">MakerWorld</span><span class="chip">Op maat</span><span class="chip">Huishoudelijk</span></div>
+          <div class="px-5 pt-[18px] pb-[22px]">
+            <h3 class="font-serif text-[1.05rem] mb-1.5">Mandjes met hex ribbed patroon</h3>
+            <p class="text-muted text-[0.92rem]">Op maat gegenereerde opbergmandjes (universal basket generator) voor de dagplanning van school — stevig en in een echte hex structuur.</p>
+            <div class="mt-3">
+              <span class="inline-block text-[0.72rem] font-semibold bg-[#f1f4f7] text-muted rounded-full px-2.5 py-[3px] mr-1.5 mb-1.5">MakerWorld</span>
+              <span class="inline-block text-[0.72rem] font-semibold bg-[#f1f4f7] text-muted rounded-full px-2.5 py-[3px] mr-1.5 mb-1.5">Op maat</span>
+              <span class="inline-block text-[0.72rem] font-semibold bg-[#f1f4f7] text-muted rounded-full px-2.5 py-[3px] mr-1.5 mb-1.5">Huishoudelijk</span>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="galerij" class="wrap">
-      <h2>Galerij — wat je van me kunt verwachten</h2>
-      <div class="gallery">
-        <figure class="shot">
-          <div class="img"><img src="/web_images/Batterij_deksel_mini.jpeg" alt="Batterijafdekplaat in de kofferbak van de classic Mini" loading="lazy" /></div>
-          <figcaption><b>Batterijdeksel classic Mini</b>Parametrisch ASA-deksel met geïntegreerde TPU-pads.</figcaption>
+    <section id="galerij" class="max-w-[1060px] mx-auto px-6 py-12">
+      <h2 class="font-serif text-[1.4rem] mb-6">Galerij — wat je van me kunt verwachten</h2>
+      <div class="grid gap-[18px] [grid-template-columns:repeat(auto-fill,minmax(210px,1fr))]">
+        <figure class="shot bg-soft rounded-2xl overflow-hidden border border-line transition duration-150 hover:-translate-y-[3px] hover:shadow-[0_8px_24px_rgba(168,80,31,0.15)]">
+          <div class="h-[200px]"><img src="/web_images/Batterij_deksel_mini.jpeg" alt="Batterijafdekplaat in de kofferbak van de classic Mini" loading="lazy" class="w-full h-full object-cover" /></div>
+          <figcaption class="px-4 pt-3 pb-[15px] text-[0.85rem] text-muted bg-card"><b class="block text-ink text-[0.92rem] mb-0.5">Batterijdeksel classic Mini</b>Parametrisch ASA-deksel met geïntegreerde TPU-pads.</figcaption>
         </figure>
-        <figure class="shot">
-          <div class="img"><img src="/web_images/OmvormerKoeling.jpeg" alt="Venturi-koelpasstuk op de omvormer" loading="lazy" /></div>
-          <figcaption><b>Koelpasstuk omvormer</b>140 mm fan met venturi-geometrie, geprint in ABS.</figcaption>
+        <figure class="shot bg-soft rounded-2xl overflow-hidden border border-line transition duration-150 hover:-translate-y-[3px] hover:shadow-[0_8px_24px_rgba(168,80,31,0.15)]">
+          <div class="h-[200px]"><img src="/web_images/OmvormerKoeling.jpeg" alt="Venturi-koelpasstuk op de omvormer" loading="lazy" class="w-full h-full object-cover" /></div>
+          <figcaption class="px-4 pt-3 pb-[15px] text-[0.85rem] text-muted bg-card"><b class="block text-ink text-[0.92rem] mb-0.5">Koelpasstuk omvormer</b>140 mm fan met venturi-geometrie, geprint in ABS.</figcaption>
         </figure>
-        <figure class="shot">
-          <div class="img"><img src="/web_images/OmvormerKoeling2.jpeg" alt="Detailfoto van het venturi-passtuk" loading="lazy" /></div>
-          <figcaption><b>Koelpasstuk — detail</b>Maximaal 95 mm hoog, precies passend gemonteerd.</figcaption>
+        <figure class="shot bg-soft rounded-2xl overflow-hidden border border-line transition duration-150 hover:-translate-y-[3px] hover:shadow-[0_8px_24px_rgba(168,80,31,0.15)]">
+          <div class="h-[200px]"><img src="/web_images/OmvormerKoeling2.jpeg" alt="Detailfoto van het venturi-passtuk" loading="lazy" class="w-full h-full object-cover" /></div>
+          <figcaption class="px-4 pt-3 pb-[15px] text-[0.85rem] text-muted bg-card"><b class="block text-ink text-[0.92rem] mb-0.5">Koelpasstuk — detail</b>Maximaal 95 mm hoog, precies passend gemonteerd.</figcaption>
         </figure>
-        <figure class="shot">
-          <div class="img"><img src="/web_images/BasketterPortret.jpeg" alt="3D-geprint portret van Giannis Antetokounmpo" loading="lazy" /></div>
-          <figcaption><b>Giannis Antetokounmpo als 3D-print</b>Portret van de NBA-ster, laag voor laag geprint.</figcaption>
+        <figure class="shot bg-soft rounded-2xl overflow-hidden border border-line transition duration-150 hover:-translate-y-[3px] hover:shadow-[0_8px_24px_rgba(168,80,31,0.15)]">
+          <div class="h-[200px]"><img src="/web_images/BasketterPortret.jpeg" alt="3D-geprint portret van Giannis Antetokounmpo" loading="lazy" class="w-full h-full object-cover" /></div>
+          <figcaption class="px-4 pt-3 pb-[15px] text-[0.85rem] text-muted bg-card"><b class="block text-ink text-[0.92rem] mb-0.5">Giannis Antetokounmpo als 3D-print</b>Portret van de NBA-ster, laag voor laag geprint.</figcaption>
         </figure>
-        <figure class="shot">
-          <div class="img"><img src="/web_images/AlchemyLab.jpeg" alt="Alchemy Lab print" loading="lazy" /></div>
-          <figcaption><b>Alchemy Lab</b>Historisch diorama van een alchemistenlab — geprint met oog voor detail.</figcaption>
+        <figure class="shot bg-soft rounded-2xl overflow-hidden border border-line transition duration-150 hover:-translate-y-[3px] hover:shadow-[0_8px_24px_rgba(168,80,31,0.15)]">
+          <div class="h-[200px]"><img src="/web_images/AlchemyLab.jpeg" alt="Alchemy Lab print" loading="lazy" class="w-full h-full object-cover" /></div>
+          <figcaption class="px-4 pt-3 pb-[15px] text-[0.85rem] text-muted bg-card"><b class="block text-ink text-[0.92rem] mb-0.5">Alchemy Lab</b>Historisch diorama van een alchemistenlab — geprint met oog voor detail.</figcaption>
         </figure>
-        <figure class="shot">
-          <div class="img"><img src="/web_images/HalloweenHouseDonker.jpeg" alt="Halloween-huis in het donker" loading="lazy" /></div>
-          <figcaption><b>Halloween-huis</b>3D-geprint huis in kleur, met sfeerverlichting vanbinnen.</figcaption>
+        <figure class="shot bg-soft rounded-2xl overflow-hidden border border-line transition duration-150 hover:-translate-y-[3px] hover:shadow-[0_8px_24px_rgba(168,80,31,0.15)]">
+          <div class="h-[200px]"><img src="/web_images/HalloweenHouseDonker.jpeg" alt="Halloween-huis in het donker" loading="lazy" class="w-full h-full object-cover" /></div>
+          <figcaption class="px-4 pt-3 pb-[15px] text-[0.85rem] text-muted bg-card"><b class="block text-ink text-[0.92rem] mb-0.5">Halloween-huis</b>3D-geprint huis in kleur, met sfeerverlichting vanbinnen.</figcaption>
         </figure>
       </div>
-      <p class="gallery-note">Nieuwe prints? Nieuwe foto's — deze galerij groeit met de werkplaats mee.</p>
+      <p class="text-muted text-[0.88rem] mt-[18px]">Nieuwe prints? Nieuwe foto's — deze galerij groeit met de werkplaats mee.</p>
     </section>
 
-    <section id="timelapse" class="wrap">
-      <h2>Timelapse uit de werkplaats</h2>
-      <figure class="tl">
-        <video controls preload="metadata">
+    <section id="timelapse" class="max-w-[1060px] mx-auto px-6 py-12">
+      <h2 class="font-serif text-[1.4rem] mb-6">Timelapse uit de werkplaats</h2>
+      <figure>
+        <video controls preload="metadata" class="w-full block rounded-2xl border border-line bg-black">
           <source src="/web_videos/keukenrolhouder.mp4" type="video/mp4" />
           Je browser ondersteunt geen video-afspelen.
         </video>
-        <figcaption>Keukenrolhouder — van eerste laag tot eindresultaat.</figcaption>
+        <figcaption class="text-muted text-[0.88rem] mt-2.5">Keukenrolhouder — van eerste laag tot eindresultaat.</figcaption>
       </figure>
     </section>
 
-    <section id="model3d" class="wrap">
-      <h2>Bekijk in 3D</h2>
-      <figure class="viewer">
-        <canvas id="viewer-canvas"></canvas>
-        <span class="viewer-hint">Slepen om te draaien &middot; scrollen om te zoomen</span>
-        <figcaption>Mandje met hex ribbed patroon (dagplanning) — ontworpen in FreeCAD, hier als draaibaar 3D-model.</figcaption>
+    <section id="model3d" class="max-w-[1060px] mx-auto px-6 py-12">
+      <h2 class="font-serif text-[1.4rem] mb-6">Bekijk in 3D</h2>
+      <figure class="relative bg-[#17120d] rounded-2xl border border-line overflow-hidden h-[480px]">
+        <canvas id="viewer-canvas" class="block w-full h-full"></canvas>
+        <span class="viewer-hint absolute top-3.5 left-4 text-[#cfc0ad] text-[0.8rem] bg-black/40 px-3 py-1 rounded-full">Slepen om te draaien &middot; scrollen om te zoomen</span>
+        <figcaption class="absolute inset-x-0 bottom-0 px-[18px] py-3.5 text-[#e8ddd0] text-[0.9rem] bg-gradient-to-t from-black/60 to-transparent">Mandje met hex ribbed patroon (dagplanning) — ontworpen in FreeCAD, hier als draaibaar 3D-model.</figcaption>
       </figure>
     </section>
 
-    <section id="over" class="about">
-      <div class="wrap about-grid">
+    <section id="over" class="bg-card border-y border-line">
+      <div class="max-w-[1060px] mx-auto px-6 py-12 grid gap-8 md:grid-cols-[1.2fr_0.8fr] items-start">
         <div>
-          <h2>Over mij</h2>
+          <h2 class="font-serif text-[1.4rem] mb-6">Over mij</h2>
           <p>Thuis staan twee Bambu Lab-printers (X2D en H2C) die bijna dagelijks draaien. Mijn sterkste punt: multi-material prints — een stug ASA-onderdeel met zachte TPU-pads in één keer goed. En omdat ik alles parametrisch in FreeCAD ontwerp, kan een ontwerp later moeiteloos mee-evolueren.</p>
-          <ul>
-            <li>Ontwerp in FreeCAD — volledig parametrisch en herbruikbaar</li>
-            <li>Prints in ASA, ABS en TPU, ook gecombineerd in één job</li>
-            <li>Van meting of 3D-scan tot een onderdeel dat echt past</li>
+          <ul class="mt-3.5 list-none p-0">
+            <li class="py-1.5 pl-[26px] relative text-muted text-[0.97rem] before:content-['→'] before:absolute before:left-0 before:text-accent before:font-bold">Ontwerp in FreeCAD — volledig parametrisch en herbruikbaar</li>
+            <li class="py-1.5 pl-[26px] relative text-muted text-[0.97rem] before:content-['→'] before:absolute before:left-0 before:text-accent before:font-bold">Prints in ASA, ABS en TPU, ook gecombineerd in één job</li>
+            <li class="py-1.5 pl-[26px] relative text-muted text-[0.97rem] before:content-['→'] before:absolute before:left-0 before:text-accent before:font-bold">Van meting of 3D-scan tot een onderdeel dat echt past</li>
           </ul>
         </div>
         <div>
-          <div class="stat"><b>2</b><span>Bambu Lab printers — X2D &amp; H2C</span></div>
-          <div class="stat"><b>3</b><span>Materialen standaard in huis: ASA, ABS, TPU</span></div>
+          <div class="bg-soft rounded-2xl p-[22px] mb-4"><b class="block text-2xl text-accent">2</b><span class="text-muted text-[0.9rem]">Bambu Lab printers — X2D &amp; H2C</span></div>
+          <div class="bg-soft rounded-2xl p-[22px]"><b class="block text-2xl text-accent">3</b><span class="text-muted text-[0.9rem]">Materialen standaard in huis: ASA, ABS, TPU</span></div>
         </div>
       </div>
     </section>
 
-    <section id="contact" class="wrap">
-      <div class="cta">
-        <h2>Laat ons even sparren?</h2>
-        <p>Stuur je idee, een schets of wat maatvoering door — je krijgt eerlijk advies, ook als een print niet de beste oplossing is. Eén stuk of een kleine reeks: het kan allebei.</p>
-        <a class="btn" href="mailto:mail@benoot.be">Mail me</a>
+    <section id="contact" class="max-w-[1060px] mx-auto px-6 py-12">
+      <div class="bg-gradient-to-br from-[#f18022] to-[#e8590c] text-white rounded-2xl px-9 py-10 text-center">
+        <h2 class="font-serif text-[1.4rem] mb-6 text-white">Laat ons even sparren?</h2>
+        <p class="max-w-[520px] mx-auto mb-[22px] text-[#ffe9db]">Stuur je idee, een schets of wat maatvoering door — je krijgt eerlijk advies, ook als een print niet de beste oplossing is. Eén stuk of een kleine reeks: het kan allebei.</p>
+        <a class="inline-block bg-white text-accent font-bold no-underline px-7 py-3 rounded-full hover:bg-[#fff4ec]" href="mailto:mail@benoot.be">Mail me</a>
       </div>
     </section>
 
-    <footer>© 2026 Dieter Benoot — www.benoot.be</footer>
+    <footer class="py-7 text-muted text-[0.85rem] text-center">&copy; 2026 Dieter Benoot — www.benoot.be</footer>
+
     <div class="lightbox" id="lightbox" aria-hidden="true">
       <figure>
         <img src="" alt="" />
