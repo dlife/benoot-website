@@ -387,11 +387,8 @@ function initGallery(PRINTS) {
     grid.appendChild(card);
   });
 
-  var sorted = PRINTS.slice().sort(function (a, b) { return b.datum.localeCompare(a.datum); });
-  var last = sorted[0];
   document.getElementById("meta-line").innerHTML =
-    "Laatste print: <b>" + last.titel + "</b> — " + daysAgo(last.datum) +
-    " dagen geleden · <b>" + PRINTS.length + "</b> stukken in de galerij";
+    "<b>" + PRINTS.length + "</b> stukken in de galerij";
 
   var modelsForViewer = PRINTS.filter(function (p) { return p.model; }).map(function (p) {
     return {
