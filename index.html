@@ -1,304 +1,416 @@
 <!doctype html>
 <html lang="nl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="3D-printwerk van Dieter Benoot — functionele prints in ASA, ABS en TPU, van ontwerp tot eindresultaat." />
-    <title>Dieter Benoot — 3D-printwerk</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='20' y='15' width='60' height='40' rx='6' fill='%23E56B4E'/><rect x='30' y='55' width='40' height='30' rx='4' fill='%23D9A441'/><rect x='38' y='63' width='24' height='4' fill='%23fffdf9'/></svg>" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              ink: "#4A3B35",
-              muted: "#8F6A24",
-              cream: "#FFF1E6",
-              card: "#FFFFFF",
-              accent: "#E56B4E",
-              deep: "#4E8D7C",
-              soft: "#DCE9E4",
-              line: "#F5DFC9"
-            },
-            fontFamily: { serif: ["Georgia", "Times New Roman", "serif"] }
-          }
-        }
-      };
-    </script>
-    <style>
-      /* Lightbox (klein restant custom CSS naast Tailwind) */
-      .lightbox { position: fixed; inset: 0; background: rgba(15,12,9,0.88); display: none; align-items: center; justify-content: center; flex-direction: column; z-index: 100; padding: 24px; }
-      .lightbox.open { display: flex; }
-      .lightbox figure { max-width: min(1100px, 100%); text-align: center; }
-      .lightbox img { max-width: 100%; max-height: 82vh; border-radius: 10px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
-      .lightbox figcaption { color: #e8ddd0; font-size: 0.95rem; margin-top: 14px; }
-      .lightbox-close { position: absolute; top: 18px; right: 22px; background: none; border: none; color: #fff; font-size: 1.6rem; cursor: pointer; }
-    </style>
-  </head>
-  <body class="bg-cream text-ink font-sans leading-relaxed">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dieter Benoot — 3D-print portfolio</title>
+<style>
+  :root {
+    --bg: #faf5ef;
+    --bg-soft: #f3e9de;
+    --ink: #3b2f2a;
+    --ink-soft: #6f5f56;
+    --terra: #c1633b;
+    --terra-deep: #a34e2c;
+    --cream: #fff9f2;
+    --line: #e5d8ca;
+    --radius: 14px;
+    --shadow: 0 6px 24px rgba(59, 47, 42, .10);
+    --shadow-lift: 0 14px 34px rgba(59, 47, 42, .16);
+    --serif: "Georgia", "Times New Roman", serif;
+    --sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.65;
+  }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 600; letter-spacing: -.01em; }
+  a { color: var(--terra-deep); }
+  img { max-width: 100%; display: block; }
+  section { max-width: 1080px; margin: 0 auto; padding: 72px 24px; }
 
-    <div class="bg-ink text-cream text-center text-[0.9rem] py-2.5 px-4" role="note">&#128679; <b>Onder constructie</b> — deze website is nog in opbouw; inhoud en vormgeving kunnen nog wijzigen.</div>
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    * { animation: none !important; transition: none !important; }
+  }
 
-    <header class="sticky top-0 z-10 bg-card border-b border-line">
-      <div class="max-w-[1060px] mx-auto px-6 py-4 flex items-center justify-between">
-        <a class="logo font-bold text-[1.05rem] tracking-wide text-ink no-underline" href="#">Dieter Benoot <span class="text-accent">&middot; 3D-print</span></a>
-        <nav class="space-x-[22px] max-md:space-x-3.5">
-          <a class="text-muted hover:text-ink no-underline text-[0.95rem] max-md:text-[0.88rem]" href="#werk">Werk</a>
-          <a class="text-muted hover:text-ink no-underline text-[0.95rem] max-md:text-[0.88rem]" href="#galerij">Galerij</a>
-          <a class="text-muted hover:text-ink no-underline text-[0.95rem] max-md:text-[0.88rem]" href="#over">Over</a>
-          <a class="text-muted hover:text-ink no-underline text-[0.95rem] max-md:text-[0.88rem]" href="#contact">Contact</a>
-        </nav>
-      </div>
-    </header>
+  header.site {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(250, 245, 239, .92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav {
+    max-width: 1080px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .nav .brand { font-family: var(--serif); font-size: 1.15rem; color: var(--ink); text-decoration: none; }
+  .nav .brand strong { color: var(--terra); }
+  .nav nav a {
+    color: var(--ink-soft); text-decoration: none; font-size: .92rem;
+    padding: 6px 10px; border-radius: 8px;
+    transition: color .2s, background .2s;
+  }
+  .nav nav a:hover, .nav nav a:focus { color: var(--terra-deep); background: var(--bg-soft); }
 
-    <div class="max-w-[1060px] mx-auto px-6 pt-[72px] pb-14">
-      <span class="inline-block bg-soft text-accent text-[0.8rem] font-semibold px-3 py-1 rounded-full mb-[18px]">FDM &middot; Bambu Lab X2D &amp; H2C</span>
-      <h1 class="font-serif text-[clamp(1.8rem,4vw,2.8rem)] leading-[1.15] max-w-[640px]">Hoi! Ik ben Dieter — ik maak 3D-prints die <em class="not-italic text-accent">precies passen</em>.</h1>
-      <p class="text-muted max-w-[560px] mt-4 text-[1.05rem]">Kapot onderdeel dat nergens te vinden is? Iets dat net wat beter moet zitten? Van je eerste schets of meting tot een stevig eindstuk in ASA, ABS of TPU — ik denk graag met je mee.</p>
+  .hero {
+    max-width: 1080px; margin: 0 auto; padding: 88px 24px 64px;
+    display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center;
+  }
+  .hero .kicker {
+    display: inline-block; font-size: .8rem; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--terra-deep); margin-bottom: 14px;
+  }
+  .hero h1 { font-size: clamp(2.1rem, 5vw, 3.3rem); line-height: 1.15; }
+  .hero h1 em { font-style: normal; color: var(--terra); }
+  .hero p.lead { margin: 18px 0 26px; font-size: 1.08rem; color: var(--ink-soft); max-width: 34rem; }
+  .hero .meta-line { font-size: .9rem; color: var(--ink-soft); margin-top: 22px; }
+  .hero .meta-line b { color: var(--terra-deep); font-weight: 600; }
+  .btn {
+    display: inline-block; background: var(--terra); color: var(--cream);
+    padding: 12px 22px; border-radius: 999px; text-decoration: none; font-weight: 600;
+    transition: transform .2s, box-shadow .2s, background .2s;
+    box-shadow: var(--shadow);
+  }
+  .btn:hover, .btn:focus-visible { background: var(--terra-deep); transform: translateY(-2px); box-shadow: var(--shadow-lift); }
+  .hero-media {
+    border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lift);
+    background: var(--bg-soft); aspect-ratio: 16/10; position: relative;
+  }
+  .hero-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .filters { display: flex; flex-wrap: wrap; gap: 10px; margin: 28px 0 34px; }
+  .filter-btn {
+    border: 1px solid var(--line); background: var(--cream); color: var(--ink-soft);
+    padding: 8px 16px; border-radius: 999px; cursor: pointer; font-size: .92rem; font-family: var(--sans);
+    transition: all .22s ease;
+  }
+  .filter-btn:hover { border-color: var(--terra); color: var(--terra-deep); transform: translateY(-1px); }
+  .filter-btn[aria-pressed="true"] {
+    background: var(--terra); border-color: var(--terra); color: var(--cream);
+    box-shadow: var(--shadow);
+  }
+  .filter-btn .count { opacity: .7; font-size: .82rem; margin-left: 4px; }
+
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 22px;
+  }
+  .card {
+    background: var(--cream); border-radius: var(--radius); overflow: hidden;
+    box-shadow: var(--shadow); cursor: pointer; border: 1px solid rgba(229, 216, 202, .6);
+    transition: transform .25s ease, box-shadow .25s ease;
+    display: flex; flex-direction: column;
+  }
+  .card:hover, .card:focus-visible { transform: translateY(-4px); box-shadow: var(--shadow-lift); outline: none; border-color: var(--terra); }
+  .card .thumb { aspect-ratio: 4/3; background: var(--bg-soft); overflow: hidden; position: relative; }
+  .card .thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+  .card:hover .thumb img { transform: scale(1.05); }
+  .card .thumb .cat-chip {
+    position: absolute; top: 10px; left: 10px;
+    background: rgba(250, 245, 239, .9); color: var(--terra-deep);
+    font-size: .74rem; padding: 3px 10px; border-radius: 999px; font-weight: 600;
+  }
+  .card .thumb .video-chip {
+    position: absolute; bottom: 10px; right: 10px;
+    background: rgba(59, 47, 42, .75); color: var(--cream);
+    font-size: .74rem; padding: 3px 9px; border-radius: 999px;
+  }
+  .card .body { padding: 16px 18px 18px; flex: 1; display: flex; flex-direction: column; gap: 6px; }
+  .card h3 { font-size: 1.12rem; }
+  .card .desc { font-size: .92rem; color: var(--ink-soft); flex: 1; }
+  .card .specs { font-size: .82rem; color: var(--ink-soft); display: flex; gap: 12px; border-top: 1px solid var(--line); padding-top: 10px; }
+  .card .specs b { color: var(--ink); font-weight: 600; }
+  .card.hidden { display: none; }
+
+  .lightbox {
+    position: fixed; inset: 0; z-index: 50; display: none;
+    background: rgba(43, 33, 28, .82); backdrop-filter: blur(4px);
+    align-items: center; justify-content: center; padding: 24px;
+  }
+  .lightbox.open { display: flex; animation: fadein .25s ease; }
+  @keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+  .lightbox figure {
+    max-width: 860px; width: 100%; background: var(--cream);
+    border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lift);
+    animation: pop .3s ease;
+  }
+  @keyframes pop { from { transform: scale(.96); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .lightbox img, .lightbox video { width: 100%; max-height: 62vh; object-fit: contain; background: #2b211c; }
+  .lightbox figcaption { padding: 18px 22px; }
+  .lightbox figcaption h3 { font-size: 1.25rem; margin-bottom: 4px; }
+  .lightbox figcaption p { color: var(--ink-soft); font-size: .95rem; }
+  .lightbox .close {
+    position: absolute; top: 18px; right: 22px; color: var(--cream);
+    background: none; border: none; font-size: 2rem; cursor: pointer; line-height: 1;
+    transition: transform .2s;
+  }
+  .lightbox .close:hover { transform: rotate(90deg); }
+
+  footer.site { border-top: 1px solid var(--line); background: var(--bg-soft); }
+  footer.site .inner {
+    max-width: 1080px; margin: 0 auto; padding: 40px 24px;
+    display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    color: var(--ink-soft); font-size: .9rem;
+  }
+
+  @media (max-width: 820px) {
+    .hero { grid-template-columns: 1fr; padding-top: 56px; }
+    .hero-media { order: -1; }
+    section { padding: 52px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="nav">
+    <a class="brand" href="#top"><strong>Dieter</strong> Benoot</a>
+    <nav>
+      <a href="#over">Over</a>
+      <a href="#werk">Werk</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="reveal">
+      <span class="kicker">3D-print portfolio</span>
+      <h1>Hoi! Ik ben Dieter. Dingen <em>makken</em> die blijven.</h1>
+      <p class="lead">
+        Op mijn Bambu Lab printer ontstaan functionele oplossingen en dekoratieve stukken,
+        van keukenrolhouder tot opdrachtwerk. Kijk rond in de galerij.
+      </p>
+      <a class="btn" href="#werk">Bekijk mijn werk</a>
+      <p class="meta-line" id="meta-line"></p>
     </div>
-
-    <section id="werk" class="max-w-[1060px] mx-auto px-6 py-12">
-      <h2 class="font-serif text-[1.4rem] mb-6">Recent werk</h2>
-      <div class="grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(280px,1fr))]">
-        <div class="card bg-card border border-line rounded-2xl overflow-hidden transition duration-150 hover:-translate-y-[3px] hover:shadow-[0_8px_24px_rgba(16,20,24,0.08)]">
-          <div class="thumb h-[170px] flex items-center justify-center">
-            <img src="/web_images/Batterij_deksel_mini.jpeg" alt="Batterijafdekplaat in de classic Mini" loading="lazy" class="w-full h-full object-cover" />
-          </div>
-          <div class="px-5 pt-[18px] pb-[22px]">
-            <h3 class="font-serif text-[1.05rem] mb-1.5">Batterijafdekplaat classic Mini</h3>
-            <p class="text-muted text-[0.92rem]">Volledig parametrisch deksel in ASA voor de batterijkuip in de kofferbak, met geïntegreerde TPU-pads en klembevestiging.</p>
-            <div class="mt-3">
-              <span class="inline-block text-[0.72rem] font-semibold bg-[#FBE8D8] text-muted rounded-full px-2.5 py-[3px] mr-1.5 mb-1.5">FreeCAD</span>
-              <span class="inline-block text-[0.72rem] font-semibold bg-[#FBE8D8] text-muted rounded-full px-2.5 py-[3px] mr-1.5 mb-1.5">ASA + TPU</span>
-              <span class="inline-block text-[0.72rem] font-semibold bg-[#FBE8D8] text-muted rounded-full px-2.5 py-[3px] mr-1.5 mb-1.5">Parametrisch</span>
-            </div>
-          </div>
-        </div>
-        <div class="card bg-card border border-line rounded-2xl overflow-hidden transition duration-150 hover:-translate-y-[3px] hover:shadow-[0_8px_24px_rgba(16,20,24,0.08)]">
-          <div class="thumb h-[170px] flex items-center justify-center">
-            <img src="/web_images/OmvormerKoeling.jpeg" alt="Venturi-passtuk op de omvormer" loading="lazy" class="w-full h-full object-cover" />
-          </div>
-          <div class="px-5 pt-[18px] pb-[22px]">
-            <h3 class="font-serif text-[1.05rem] mb-1.5">Venturi-passtuk omvormer</h3>
-            <p class="text-muted text-[0.92rem]">Passtuk om een 140 mm PC-fan op de omvormer te monteren, met venturi-geometrie en maximale hoogte van 95 mm, geprint in ABS.</p>
-            <div class="mt-3">
-              <span class="inline-block text-[0.72rem] font-semibold bg-[#FBE8D8] text-muted rounded-full px-2.5 py-[3px] mr-1.5 mb-1.5">FreeCAD</span>
-              <span class="inline-block text-[0.72rem] font-semibold bg-[#FBE8D8] text-muted rounded-full px-2.5 py-[3px] mr-1.5 mb-1.5">ABS</span>
-              <span class="inline-block text-[0.72rem] font-semibold bg-[#FBE8D8] text-muted rounded-full px-2.5 py-[3px] mr-1.5 mb-1.5">Venturi</span>
-            </div>
-          </div>
-        </div>
-        <div class="card bg-card border border-line rounded-2xl overflow-hidden transition duration-150 hover:-translate-y-[3px] hover:shadow-[0_8px_24px_rgba(16,20,24,0.08)]">
-          <div class="thumb h-[170px] flex items-center justify-center">
-            <svg width="120" height="100" viewBox="0 0 120 100" fill="none">
-              <path d="M25 80 L25 40 Q25 25 40 25 L80 25 Q95 25 95 40 L95 80 Z" fill="#ffe3cd" stroke="#e56b4e" stroke-width="3"/>
-              <path d="M25 52 L95 52 M25 66 L95 66" stroke="#e56b4e" stroke-width="2"/>
-            </svg>
-          </div>
-          <div class="px-5 pt-[18px] pb-[22px]">
-            <h3 class="font-serif text-[1.05rem] mb-1.5">Mandjes met hex ribbed patroon</h3>
-            <p class="text-muted text-[0.92rem]">Op maat gegenereerde opbergmandjes (universal basket generator) voor de dagplanning van school — stevig en in een echte hex structuur.</p>
-            <div class="mt-3">
-              <span class="inline-block text-[0.72rem] font-semibold bg-[#FBE8D8] text-muted rounded-full px-2.5 py-[3px] mr-1.5 mb-1.5">MakerWorld</span>
-              <span class="inline-block text-[0.72rem] font-semibold bg-[#FBE8D8] text-muted rounded-full px-2.5 py-[3px] mr-1.5 mb-1.5">Op maat</span>
-              <span class="inline-block text-[0.72rem] font-semibold bg-[#FBE8D8] text-muted rounded-full px-2.5 py-[3px] mr-1.5 mb-1.5">Huishoudelijk</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="galerij" class="max-w-[1060px] mx-auto px-6 py-12">
-      <h2 class="font-serif text-[1.4rem] mb-6">Galerij — wat je van me kunt verwachten</h2>
-      <div class="grid gap-[18px] [grid-template-columns:repeat(auto-fill,minmax(210px,1fr))]">
-        <figure class="shot bg-soft rounded-2xl overflow-hidden border border-line transition duration-150 hover:-translate-y-[3px] hover:shadow-[0_8px_24px_rgba(168,80,31,0.15)]">
-          <div class="h-[200px]"><img src="/web_images/Batterij_deksel_mini.jpeg" alt="Batterijafdekplaat in de kofferbak van de classic Mini" loading="lazy" class="w-full h-full object-cover" /></div>
-          <figcaption class="px-4 pt-3 pb-[15px] text-[0.85rem] text-muted bg-card"><b class="block text-ink text-[0.92rem] mb-0.5">Batterijdeksel classic Mini</b>Parametrisch ASA-deksel met geïntegreerde TPU-pads.</figcaption>
-        </figure>
-        <figure class="shot bg-soft rounded-2xl overflow-hidden border border-line transition duration-150 hover:-translate-y-[3px] hover:shadow-[0_8px_24px_rgba(168,80,31,0.15)]">
-          <div class="h-[200px]"><img src="/web_images/OmvormerKoeling.jpeg" alt="Venturi-koelpasstuk op de omvormer" loading="lazy" class="w-full h-full object-cover" /></div>
-          <figcaption class="px-4 pt-3 pb-[15px] text-[0.85rem] text-muted bg-card"><b class="block text-ink text-[0.92rem] mb-0.5">Koelpasstuk omvormer</b>140 mm fan met venturi-geometrie, geprint in ABS.</figcaption>
-        </figure>
-        <figure class="shot bg-soft rounded-2xl overflow-hidden border border-line transition duration-150 hover:-translate-y-[3px] hover:shadow-[0_8px_24px_rgba(168,80,31,0.15)]">
-          <div class="h-[200px]"><img src="/web_images/OmvormerKoeling2.jpeg" alt="Detailfoto van het venturi-passtuk" loading="lazy" class="w-full h-full object-cover" /></div>
-          <figcaption class="px-4 pt-3 pb-[15px] text-[0.85rem] text-muted bg-card"><b class="block text-ink text-[0.92rem] mb-0.5">Koelpasstuk — detail</b>Maximaal 95 mm hoog, precies passend gemonteerd.</figcaption>
-        </figure>
-        <figure class="shot bg-soft rounded-2xl overflow-hidden border border-line transition duration-150 hover:-translate-y-[3px] hover:shadow-[0_8px_24px_rgba(168,80,31,0.15)]">
-          <div class="h-[200px]"><img src="/web_images/BasketterPortret.jpeg" alt="3D-geprint portret van Giannis Antetokounmpo" loading="lazy" class="w-full h-full object-cover" /></div>
-          <figcaption class="px-4 pt-3 pb-[15px] text-[0.85rem] text-muted bg-card"><b class="block text-ink text-[0.92rem] mb-0.5">Giannis Antetokounmpo als 3D-print</b>Portret van de NBA-ster, laag voor laag geprint.</figcaption>
-        </figure>
-        <figure class="shot bg-soft rounded-2xl overflow-hidden border border-line transition duration-150 hover:-translate-y-[3px] hover:shadow-[0_8px_24px_rgba(168,80,31,0.15)]">
-          <div class="h-[200px]"><img src="/web_images/AlchemyLab.jpeg" alt="Alchemy Lab print" loading="lazy" class="w-full h-full object-cover" /></div>
-          <figcaption class="px-4 pt-3 pb-[15px] text-[0.85rem] text-muted bg-card"><b class="block text-ink text-[0.92rem] mb-0.5">Alchemy Lab</b>Historisch diorama van een alchemistenlab — geprint met oog voor detail.</figcaption>
-        </figure>
-        <figure class="shot bg-soft rounded-2xl overflow-hidden border border-line transition duration-150 hover:-translate-y-[3px] hover:shadow-[0_8px_24px_rgba(168,80,31,0.15)]">
-          <div class="h-[200px]"><img src="/web_images/HalloweenHouseDonker.jpeg" alt="Halloween-huis in het donker" loading="lazy" class="w-full h-full object-cover" /></div>
-          <figcaption class="px-4 pt-3 pb-[15px] text-[0.85rem] text-muted bg-card"><b class="block text-ink text-[0.92rem] mb-0.5">Halloween-huis</b>3D-geprint huis in kleur, met sfeerverlichting vanbinnen.</figcaption>
-        </figure>
-      </div>
-      <p class="text-muted text-[0.88rem] mt-[18px]">Nieuwe prints? Nieuwe foto's — deze galerij groeit met de werkplaats mee.</p>
-    </section>
-
-    <section id="timelapse" class="max-w-[1060px] mx-auto px-6 py-12">
-      <h2 class="font-serif text-[1.4rem] mb-6">Timelapse uit de werkplaats</h2>
-      <figure>
-        <video controls preload="metadata" class="w-full block rounded-2xl border border-line bg-black">
-          <source src="/web_videos/keukenrolhouder.mp4" type="video/mp4" />
-          Je browser ondersteunt geen video-afspelen.
-        </video>
-        <figcaption class="text-muted text-[0.88rem] mt-2.5">Keukenrolhouder — van eerste laag tot eindresultaat.</figcaption>
-      </figure>
-    </section>
-
-    <section id="model3d" class="max-w-[1060px] mx-auto px-6 py-12">
-      <h2 class="font-serif text-[1.4rem] mb-6">Bekijk in 3D</h2>
-      <figure class="relative bg-[#17120d] rounded-2xl border border-line overflow-hidden h-[480px]">
-        <canvas id="viewer-canvas" class="block w-full h-full"></canvas>
-        <span class="viewer-hint absolute top-3.5 left-4 text-[#cfc0ad] text-[0.8rem] bg-black/40 px-3 py-1 rounded-full">Slepen om te draaien &middot; scrollen om te zoomen</span>
-        <figcaption class="absolute inset-x-0 bottom-0 px-[18px] py-3.5 text-[#e8ddd0] text-[0.9rem] bg-gradient-to-t from-black/60 to-transparent">Mandje met hex ribbed patroon (dagplanning) — ontworpen in FreeCAD, hier als draaibaar 3D-model.</figcaption>
-      </figure>
-    </section>
-
-    <section id="over" class="bg-card border-y border-line">
-      <div class="max-w-[1060px] mx-auto px-6 py-12 grid gap-8 md:grid-cols-[1.2fr_0.8fr] items-start">
-        <div>
-          <h2 class="font-serif text-[1.4rem] mb-6">Over mij</h2>
-          <p>Thuis staan twee Bambu Lab-printers (X2D en H2C) die bijna dagelijks draaien. Mijn sterkste punt: multi-material prints — een stug ASA-onderdeel met zachte TPU-pads in één keer goed. En omdat ik alles parametrisch in FreeCAD ontwerp, kan een ontwerp later moeiteloos mee-evolueren.</p>
-          <ul class="mt-3.5 list-none p-0">
-            <li class="py-1.5 pl-[26px] relative text-muted text-[0.97rem] before:content-['→'] before:absolute before:left-0 before:text-accent before:font-bold">Ontwerp in FreeCAD — volledig parametrisch en herbruikbaar</li>
-            <li class="py-1.5 pl-[26px] relative text-muted text-[0.97rem] before:content-['→'] before:absolute before:left-0 before:text-accent before:font-bold">Prints in ASA, ABS en TPU, ook gecombineerd in één job</li>
-            <li class="py-1.5 pl-[26px] relative text-muted text-[0.97rem] before:content-['→'] before:absolute before:left-0 before:text-accent before:font-bold">Van meting of 3D-scan tot een onderdeel dat echt past</li>
-          </ul>
-        </div>
-        <div>
-          <div class="bg-soft rounded-2xl p-[22px] mb-4"><b class="block text-2xl text-accent">2</b><span class="text-muted text-[0.9rem]">Bambu Lab printers — X2D &amp; H2C</span></div>
-          <div class="bg-soft rounded-2xl p-[22px]"><b class="block text-2xl text-accent">3</b><span class="text-muted text-[0.9rem]">Materialen standaard in huis: ASA, ABS, TPU</span></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="contact" class="max-w-[1060px] mx-auto px-6 py-12">
-      <div class="bg-gradient-to-br from-accent to-deep text-white rounded-2xl px-9 py-10 text-center">
-        <h2 class="font-serif text-[1.4rem] mb-6 text-white">Laat ons even sparren?</h2>
-        <p class="max-w-[520px] mx-auto mb-[22px] text-[#ffe9db]">Stuur je idee, een schets of wat maatvoering door — je krijgt eerlijk advies, ook als een print niet de beste oplossing is. Eén stuk of een kleine reeks: het kan allebei.</p>
-        <a class="inline-block bg-white text-accent font-bold no-underline px-7 py-3 rounded-full hover:bg-[#fff4ec]" href="mailto:dieter.print@example.com">Mail me</a>
-      </div>
-    </section>
-
-    <footer class="py-7 text-muted text-[0.85rem] text-center">&copy; 2026 Dieter Benoot — www.benoot.be</footer>
-
-    <div class="lightbox" id="lightbox" aria-hidden="true">
-      <figure>
-        <img src="" alt="" />
-        <figcaption></figcaption>
-      </figure>
-      <button class="lightbox-close" aria-label="Sluiten">&#10005;</button>
+    <div class="hero-media reveal">
+      <video muted loop playsinline preload="metadata" controls
+             poster="web_images/keukenrolhouder.jpg"
+             src="web_videos/keukenrolhouder.mp4"></video>
     </div>
-    <script>
-      (function () {
-        var lb = document.getElementById("lightbox");
-        var lbImg = lb.querySelector("img");
-        var lbCap = lb.querySelector("figcaption");
-        function openLightbox(src, alt, cap) {
-          lbImg.src = src; lbImg.alt = alt || ""; lbCap.textContent = cap || "";
-          lb.classList.add("open"); lb.setAttribute("aria-hidden", "false");
-          document.body.style.overflow = "hidden";
-        }
-        function closeLightbox() {
-          lb.classList.remove("open"); lb.setAttribute("aria-hidden", "true");
-          document.body.style.overflow = "";
-        }
-        document.querySelectorAll(".shot img, .card .thumb img").forEach(function (img) {
-          var holder = img.closest(".shot") || img.closest(".card");
-          holder.style.cursor = "zoom-in";
-          holder.addEventListener("click", function () {
-            var cap = "";
-            if (holder.classList.contains("shot")) {
-              var fc = holder.querySelector("figcaption");
-              cap = fc ? fc.textContent : "";
-            } else {
-              var h = holder.querySelector("h3");
-              cap = h ? h.textContent : "";
-            }
-            openLightbox(img.src, img.alt, cap);
-          });
-        });
-        lb.addEventListener("click", function (e) { if (e.target !== lbImg) closeLightbox(); });
-        document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeLightbox(); });
-      })();
-    </script>
-    <script type="importmap">
-      {
-        "imports": {
-          "three": "https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js",
-          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.161.0/examples/jsm/"
-        }
-      }
-    </script>
-    <script type="module">
-      import * as THREE from "three";
-      import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-      import { STLLoader } from "three/addons/loaders/STLLoader.js";
+  </div>
 
-      const canvas = document.getElementById("viewer-canvas");
-      const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  <section id="over">
+    <div class="reveal">
+      <h2>Over mij &amp; mijn prints</h2>
+      <p style="margin-top:14px; max-width:46rem; color:var(--ink-soft);">
+        Ik print vooral met PLA en PETG op mijn Bambu Lab, meestal ontwerpen die ik zelf
+        maak of aanpas aan een concrete behoefte thuis. Elk stuk in de galerij komt met
+        materiaal en printtijd, zodat je een eerlijk beeld krijgt.
+      </p>
+    </div>
+  </section>
 
-      const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x17120d);
+  <section id="werk" style="padding-top:0;">
+    <div class="reveal">
+      <h2>Recent werk</h2>
+      <div class="filters" id="filters" role="group" aria-label="Filter galerij"></div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
 
-      const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 10000);
-      camera.position.set(80, 60, 200);
+  <section id="contact" style="padding-top:0;">
+    <div class="reveal">
+      <h2>Contact</h2>
+      <p style="margin-top:12px; color:var(--ink-soft);">
+        Vragen over een print of een eigen idee? Stuur gerust een bericht via
+        <a href="mailto:dieter@benoot.be">dieter@benoot.be</a>.
+      </p>
+    </div>
+  </section>
+</main>
 
-      scene.add(new THREE.HemisphereLight(0xffffff, 0x554433, 1.1));
-      const zon = new THREE.DirectionalLight(0xffffff, 1.4);
-      zon.position.set(100, 200, 150);
-      scene.add(zon);
-      const invul = new THREE.DirectionalLight(0xffffff, 0.5);
-      invul.position.set(-120, 80, -100);
-      scene.add(invul);
+<footer class="site">
+  <div class="inner">
+    <span>© <span id="year"></span> Dieter Benoot</span>
+    <span>benoot.be</span>
+  </div>
+</footer>
 
-      const controls = new OrbitControls(camera, canvas);
-      controls.enableDamping = true;
-      controls.autoRotate = true;
-      controls.autoRotateSpeed = 1.4;
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Print details">
+  <button class="close" id="lb-close" aria-label="Sluiten">&times;</button>
+  <figure>
+    <div id="lb-media"></div>
+    <figcaption id="lb-cap"></figcaption>
+  </figure>
+</div>
 
-      new STLLoader().load(
-        "/web_images/Dagplanning%203.stl",
-        function (geom) {
-          geom.computeVertexNormals();
-          const mesh = new THREE.Mesh(geom, new THREE.MeshStandardMaterial({ color: 0xe56b4e, roughness: 0.55, metalness: 0.05 }));
-          const box = new THREE.Box3().setFromObject(mesh);
-          const size = box.getSize(new THREE.Vector3());
-          const center = box.getCenter(new THREE.Vector3());
-          mesh.position.sub(center);
-          scene.add(mesh);
-          const maxDim = Math.max(size.x, size.y, size.z);
-          const dist = maxDim * 1.9;
-          camera.position.set(dist * 0.35, dist * 0.45, dist);
-          controls.update();
-        },
-        undefined,
-        function () {
-          const hint = document.querySelector(".viewer-hint");
-          if (hint) hint.textContent = "Model kon helaas niet geladen worden";
-        }
-      );
+<script>
+/* ============================================================
+   DATA-LAAG (dynamisch)
+   De galerij wordt opgehaald uit prints.php, dat automatisch de
+   mappen web_images/ en web_videos/ op de NAS scant.
+   Nieuwe print toevoegen = foto in web_images/ droppen. Klaar.
+   Werkt prints.php niet (bv. zonder PHP), dan valt de site terug
+   op onderstaande ingebouwde data.
+   ============================================================ */
+const FALLBACK_PRINTS = [
+  {
+    id: "keukenrolhouder",
+    titel: "Keukenrolhouder",
+    omschrijving: "Wandhouder voor keukenrollen met afneembare klep, gedrukt in PETG voor wat vochtbestendigheid.",
+    categorie: "functioneel",
+    afbeelding: "web_images/keukenrolhouder.jpg",
+    video: "web_videos/keukenrolhouder.mp4",
+    materiaal: "PETG",
+    printtijd: 6.5,
+    datum: "2026-10-20"
+  },
+  {
+    id: "kabelgoot",
+    titel: "Kabelgoot voor bureau",
+    omschrijving: "Op maat gemaakte kabelgoot die aan de onderkant van mijn bureau klikt, met clips per kabel.",
+    categorie: "functioneel",
+    afbeelding: "web_images/kabelgoot.jpg",
+    materiaal: "PLA",
+    printtijd: 3.2,
+    datum: "2026-10-02"
+  },
+  {
+    id: "vaas-relief",
+    titel: "Reliefvaas",
+    omschrijving: "Decoratieve vaas met golvend reliëfpatroon, geprint in cascade groen met zijglans afwerking.",
+    categorie: "decoratief",
+    afbeelding: "web_images/vaas.jpg",
+    materiaal: "PLA Silk",
+    printtijd: 9.0,
+    datum: "2026-09-18"
+  },
+  {
+    id: "hondenspeelgoed",
+    titel: "Speelbal-houder voor Kim",
+    omschrijving: "Verstelbare houder voor speelballen, op vraag getest en goedgekeurd door Superhond.",
+    categorie: "opdracht",
+    afbeelding: "web_images/speelbal.jpg",
+    materiaal: "PETG",
+    printtijd: 4.1,
+    datum: "2026-08-30"
+  },
+  {
+    id: "ladescheider",
+    titel: "Ladescheiders",
+    omschrijving: "Modulaire tussenwanden voor de keukenlade, klikbaar systeem in drie hoogtes.",
+    categorie: "functioneel",
+    afbeelding: "web_images/ladescheider.jpg",
+    materiaal: "PLA",
+    printtijd: 2.7,
+    datum: "2026-08-11"
+  }
+];
 
-      function resize() {
-        const w = canvas.clientWidth, h = canvas.clientHeight;
-        renderer.setSize(w, h, false);
-        camera.aspect = w / h;
-        camera.updateProjectionMatrix();
-      }
-      window.addEventListener("resize", resize);
-      resize();
+const grid = document.getElementById("grid");
+const filtersEl = document.getElementById("filters");
 
-      renderer.setAnimationLoop(function () {
-        controls.update();
-        renderer.render(scene, camera);
+function daysAgo(dateStr) {
+  return Math.max(0, Math.round((Date.now() - new Date(dateStr)) / 86400000));
+}
+function specHtml(p) {
+  return "<span><b>" + p.materiaal + "</b></span>" +
+         "<span><b>" + p.printtijd + "</b> u print</span>" +
+         "<span><b>" + daysAgo(p.datum) + "</b> dagen geleden</span>";
+}
+
+function initGallery(PRINTS) {
+  /* Filters */
+  var CATS = ["alles"].concat(Array.from(new Set(PRINTS.map(function (p) { return p.categorie; }))));
+  CATS.forEach(function (cat) {
+    var count = cat === "alles" ? PRINTS.length : PRINTS.filter(function (p) { return p.categorie === cat; }).length;
+    var btn = document.createElement("button");
+    btn.className = "filter-btn";
+    btn.setAttribute("aria-pressed", cat === "alles");
+    btn.innerHTML = cat.charAt(0).toUpperCase() + cat.slice(1) + ' <span class="count">' + count + "</span>";
+    btn.addEventListener("click", function () {
+      filtersEl.querySelectorAll(".filter-btn").forEach(function (b) { b.setAttribute("aria-pressed", b === btn); });
+      document.querySelectorAll(".card").forEach(function (c) {
+        var show = cat === "alles" || c.dataset.cat === cat;
+        c.classList.toggle("hidden", !show);
       });
-    </script>
-  </body>
+    });
+    filtersEl.appendChild(btn);
+  });
+
+  /* Kaarten */
+  PRINTS.forEach(function (p) {
+    var card = document.createElement("article");
+    card.className = "card";
+    card.dataset.cat = p.categorie;
+    card.tabIndex = 0;
+    var media = p.video
+      ? '<video src="' + p.video + '" muted loop playsinline preload="metadata" controls></video>'
+      : '<img src="' + p.afbeelding + '" alt="' + p.titel + '" loading="lazy" />';
+    card.innerHTML =
+      '<div class="thumb">' + media +
+        '<span class="cat-chip">' + p.categorie + "</span>" +
+        (p.video ? '<span class="video-chip">video</span>' : "") +
+      "</div>" +
+      '<div class="body">' +
+        "<h3>" + p.titel + "</h3>" +
+        '<p class="desc">' + (p.omschrijving || "") + "</p>" +
+        '<div class="specs">' + specHtml(p) + "</div>" +
+      "</div>";
+    card.addEventListener("click", function () { openLightbox(p); });
+    card.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLightbox(p); }
+    });
+    grid.appendChild(card);
+  });
+
+  /* Meta-regel onder hero */
+  var sorted = PRINTS.slice().sort(function (a, b) { return b.datum.localeCompare(a.datum); });
+  var last = sorted[0];
+  document.getElementById("meta-line").innerHTML =
+    "Laatste print: <b>" + last.titel + "</b> — " + daysAgo(last.datum) +
+    " dagen geleden · <b>" + PRINTS.length + "</b> stukken in de galerij";
+}
+
+/* Dynamisch ophalen, met fallback */
+fetch("prints.php")
+  .then(function (r) { if (!r.ok) throw new Error("prints.php niet beschikbaar"); return r.json(); })
+  .then(initGallery)
+  .catch(function () { initGallery(FALLBACK_PRINTS); });
+
+/* Lightbox */
+var lb = document.getElementById("lightbox");
+var lbMedia = document.getElementById("lb-media");
+var lbCap = document.getElementById("lb-cap");
+function openLightbox(p) {
+  lbMedia.innerHTML = p.video
+    ? '<video src="' + p.video + '" controls autoplay muted loop playsinline></video>'
+    : '<img src="' + p.afbeelding + '" alt="' + p.titel + '" />';
+  lbCap.innerHTML = "<h3>" + p.titel + "</h3><p>" + (p.omschrijving || "") + "</p>" +
+    '<div class="specs">' + specHtml(p) + "</div>";
+  lb.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function closeLightbox() {
+  lb.classList.remove("open");
+  lbMedia.innerHTML = "";
+  document.body.style.overflow = "";
+}
+document.getElementById("lb-close").addEventListener("click", closeLightbox);
+lb.addEventListener("click", function (e) { if (e.target === lb) closeLightbox(); });
+document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeLightbox(); });
+
+/* Scroll-reveal */
+(function () {
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
+})();
+
+document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
 </html>
