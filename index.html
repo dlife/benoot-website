@@ -116,6 +116,11 @@
     background: rgba(59, 47, 42, .75); color: var(--cream);
     font-size: .74rem; padding: 3px 9px; border-radius: 999px;
   }
+  .card .thumb .model-chip {
+    position: absolute; bottom: 10px; left: 10px;
+    background: var(--terra); color: var(--cream);
+    font-size: .74rem; padding: 3px 9px; border-radius: 999px; font-weight: 600;
+  }
   .card .body { padding: 16px 18px 18px; flex: 1; display: flex; flex-direction: column; gap: 6px; }
   .card h3 { font-size: 1.12rem; }
   .card .desc { font-size: .92rem; color: var(--ink-soft); flex: 1; }
@@ -290,6 +295,7 @@ const FALLBACK_PRINTS = [
   { id: "Batterij_deksel_mini", titel: "Batterijdeksel Mini",
     omschrijving: "Vervangend deksel voor de batterij van de classic Mini.",
     categorie: "functioneel", afbeelding: "web_images/Batterij_deksel_mini.jpeg", video: null,
+    model: "web_models/BatteryLidMini.stl",
     materiaal: "PLA", printtijd: null, datum: "2026-10-26" },
   { id: "HalloweenHouseDonker", titel: "Halloweenhuis (donker)", omschrijving: "",
     categorie: "decoratief", afbeelding: "web_images/HalloweenHouseDonker.jpeg", video: null,
@@ -359,6 +365,7 @@ function initGallery(PRINTS) {
       '<div class="thumb">' + media +
         '<span class="cat-chip">' + p.categorie + "</span>" +
         (p.video ? '<span class="video-chip">video</span>' : "") +
+        (p.model ? '<span class="model-chip">📐 3D</span>' : "") +
       "</div>" +
       '<div class="body">' +
         "<h3>" + p.titel + "</h3>" +
@@ -429,6 +436,14 @@ function openLightbox(p) {
     : '<img src="' + p.afbeelding + '" alt="' + p.titel + '" />';
   lbCap.innerHTML = "<h3>" + p.titel + "</h3><p>" + (p.omschrijving || "") + "</p>" +
     '<div class="specs">' + specHtml(p) + "</div>";
+  if (p.model) {
+    var btn3d = document.createElement("button");
+    btn3d.className = "btn";
+    btn3d.style.marginTop = "14px";
+    btn3d.textContent = "📐 Bekijk in 3D";
+    btn3d.addEventListener("click", function () { showInViewer(p); });
+    lbCap.appendChild(btn3d);
+  }
   lb.classList.add("open");
   document.body.style.overflow = "hidden";
 }

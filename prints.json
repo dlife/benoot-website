@@ -30,7 +30,7 @@
     "categorie": "functioneel",
     "afbeelding": "web_images/Batterij_deksel_mini.jpeg",
     "video": null,
-    "model": null,
+    "model": "web_models/BatteryLidMini.stl",
     "materiaal": "PLA",
     "printtijd": null,
     "datum": "2026-10-26"

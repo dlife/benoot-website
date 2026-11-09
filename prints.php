@@ -4,10 +4,11 @@
  * Scant automatisch:
  *   web_images/   -> foto's van prints (.jpg / .jpeg / .png / .webp)
  *   web_videos/   -> optionele video's (.mp4), gekoppeld op bestandsnaam
- *   web_models/   -> 3D-modellen (.stl / .glb), ook gekoppeld op bestandsnaam
- *                    (modellen in web_images/ worden eveneens herkend)
- *   captions.json -> optionele metadata per print (zie onderaan)
- * Nieuwe print = foto droppen. Nieuw 3D-object = .stl droppen. Klaar.
+ *   web_models/   -> 3D-modellen (.stl / .glb)
+ *   captions.json -> optionele metadata per print; kan ook een model koppelen
+ *                    aan een print met "model": "<bestandsnaam zonder extensie>"
+ * Koppeling gebeurt standaard op bestandsnaam (foto.jpg <-> foto.stl);
+ * met captions.json kan een model aan een andere print gekoppeld worden.
  */
 
 header('Content-Type: application/json; charset=utf-8');
@@ -65,6 +66,15 @@ function collectModels(): array
     return $out;
 }
 
+/* Model zoeken: eerst de koppeling uit captions.json, anders de eigen bestandsnaam.
+   Geeft [pad => pad of null, sleutel => gebruikte modelsleutel] terug. */
+function resolveModel(array $meta, string $id, array $models): array
+{
+    $key = $meta['model'] ?? $id;
+    $key = preg_replace('/\.(stl|glb)$/i', '', (string)$key);
+    return [$models[$key] ?? null, $key];
+}
+
 $captions = [];
 if (is_file(CAPTIONS_FILE)) {
     $decoded = json_decode(file_get_contents(CAPTIONS_FILE), true);
@@ -83,11 +93,16 @@ foreach ($videos as $video) {
 }
 
 $prints = [];
+$usedIds = [];
+$usedModelKeys = [];
+
 foreach ($images as $image) {
     $id = pathinfo($image, PATHINFO_FILENAME);
     $meta = $captions[$id] ?? [];
+    if (!empty($meta['verborgen'])) continue;
 
-    if (!empty($meta['verborgen'])) continue; // bv. portret, geen print
+    [$modelPath, $modelKey] = resolveModel($meta, $id, $models);
+    if ($modelPath !== null) $usedModelKeys[] = $modelKey;
 
     $prints[] = [
         'id'           => $id,
@@ -96,21 +111,23 @@ foreach ($images as $image) {
         'categorie'    => $meta['categorie'] ?? 'functioneel',
         'afbeelding'   => 'web_images/' . rawurlencode($image),
         'video'        => isset($videoByName[$id]) ? 'web_videos/' . rawurlencode($videoByName[$id]) : null,
-        'model'        => $models[$id] ?? null,
+        'model'        => $modelPath,
         'materiaal'    => $meta['materiaal'] ?? 'PLA',
         'printtijd'    => $meta['printtijd'] ?? null,
         'datum'        => date('Y-m-d', isset($meta['datum']) ? strtotime($meta['datum']) : filemtime(IMAGE_DIR . $image)),
     ];
+    $usedIds[] = $id;
 }
 
 $videoOnly = [];
 foreach ($videos as $video) {
     $id = pathinfo($video, PATHINFO_FILENAME);
-    if (isset($videoByName[$id]) && array_filter($prints, fn($p) => $p['id'] === $id)) {
-        continue; // al gekoppeld aan een foto
-    }
+    if (in_array($id, $usedIds, true)) continue; // al gekoppeld aan een foto
     $meta = $captions[$id] ?? [];
     if (!empty($meta['verborgen'])) continue;
+
+    [$modelPath, $modelKey] = resolveModel($meta, $id, $models);
+    if ($modelPath !== null) $usedModelKeys[] = $modelKey;
 
     $videoOnly[] = [
         'id'           => $id,
@@ -119,26 +136,24 @@ foreach ($videos as $video) {
         'categorie'    => $meta['categorie'] ?? 'functioneel',
         'afbeelding'   => null,
         'video'        => 'web_videos/' . rawurlencode($video),
-        'model'        => $models[$id] ?? null,
+        'model'        => $modelPath,
         'materiaal'    => $meta['materiaal'] ?? 'PLA',
         'printtijd'    => $meta['printtijd'] ?? null,
         'datum'        => date('Y-m-d', filemtime(VIDEO_DIR . $video)),
     ];
+    $usedIds[] = $id;
 }
 
-// Modellen zonder foto en zonder video: eigen galerij-kaartje (3D-only)
-$usedIds = [];
-foreach (array_merge($prints, $videoOnly) as $p) {
-    $usedIds[] = $p['id'];
-}
-foreach ($models as $id => $rel) {
-    if (in_array($id, $usedIds, true)) continue;
-    $meta = $captions[$id] ?? [];
+/* Modellen zonder foto en video: eigen 3D-kaartje in de galerij */
+foreach ($models as $mid => $rel) {
+    if (in_array($mid, $usedIds, true)) continue;
+    if (in_array($mid, $usedModelKeys, true)) continue; // al aan een print gekoppeld
+    $meta = $captions[$mid] ?? [];
     if (!empty($meta['verborgen'])) continue;
 
     $prints[] = [
-        'id'           => $id,
-        'titel'        => $meta['titel'] ?? titleFromFile($id),
+        'id'           => $mid,
+        'titel'        => $meta['titel'] ?? titleFromFile($mid),
         'omschrijving' => $meta['omschrijving'] ?? '',
         'categorie'    => $meta['categorie'] ?? 'functioneel',
         'afbeelding'   => null,
@@ -151,9 +166,3 @@ foreach ($models as $id => $rel) {
 }
 
 echo json_encode(array_merge($prints, $videoOnly), JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-
-/* ===========================================================================
- * OPTIONELE METADATA: captions.json (naast prints.php)
- * Sleutel = bestandsnaam zonder extensie. Alle velden optioneel.
- * "verborgen": true laat een bestand buiten de galerij.
- * =========================================================================== */

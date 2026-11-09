@@ -17,7 +17,8 @@
   "Batterij_deksel_mini": {
     "titel": "Batterijdeksel Mini",
     "omschrijving": "Vervangend deksel voor de batterij van de classic Mini.",
-    "categorie": "functioneel"
+    "categorie": "functioneel",
+    "model": "BatteryLidMini"
   },
   "HalloweenHouseDonker": {
     "titel": "Halloweenhuis (donker)",
@@ -35,12 +36,6 @@
     "titel": "Dagplanning-mandje (hex ribbed)",
     "omschrijving": "Mandje voor de schooldagplanning, gegenereerd met de universal basket generator.",
     "categorie": "functioneel"
-  },
-  "BatteryLidMini": {
-    "titel": "Batterijdeksel Mini (3D-model)",
-    "omschrijving": "Afdekplaat voor de batterijkuip in de kofferbak van de classic Mini, volledig parametrisch FreeCAD-ontwerp.",
-    "categorie": "functioneel",
-    "materiaal": "ASA"
   },
   "BuckConverterCase": {
     "titel": "Buckconverter-behuizing",
