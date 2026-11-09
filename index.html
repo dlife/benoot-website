@@ -411,6 +411,7 @@ function showInViewer(p) {
   if (window.DV) {
     window.DV.show(p.id);
     document.getElementById("viewer").scrollIntoView({ behavior: "smooth" });
+    closeLightbox();
   }
 }
 
