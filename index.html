@@ -147,6 +147,15 @@
   }
   .lightbox .close:hover { transform: rotate(90deg); }
 
+  .wip-banner {
+    max-width: 1080px; margin: 24px auto -36px; padding: 0 24px;
+  }
+  .wip-banner span {
+    display: inline-block; background: var(--terra); color: var(--cream);
+    font-size: .85rem; font-weight: 600; padding: 6px 16px; border-radius: 999px;
+    box-shadow: var(--shadow);
+  }
+
   footer.site { border-top: 1px solid var(--line); background: var(--bg-soft); }
   footer.site .inner {
     max-width: 1080px; margin: 0 auto; padding: 40px 24px;
@@ -169,19 +178,22 @@
     <nav>
       <a href="#over">Over</a>
       <a href="#werk">Werk</a>
-      <a href="#contact">Contact</a>
     </nav>
   </div>
 </header>
 
 <main id="top">
+  <div class="wip-banner">
+    <span>🚧 Deze website is nog in opbouw</span>
+  </div>
+
   <div class="hero">
     <div class="reveal">
-      <span class="kicker">3D-print portfolio</span>
+      <span class="kicker">3D-print portfolio · hobby</span>
       <h1>Hoi! Ik ben Dieter. Dingen <em>makken</em> die blijven.</h1>
       <p class="lead">
         Op mijn Bambu Lab printer ontstaan functionele oplossingen en dekoratieve stukken,
-        van keukenrolhouder tot opdrachtwerk. Kijk rond in de galerij.
+        van keukenrolhouder tot Halloweenhuis. Kijk alvast rond in de galerij.
       </p>
       <a class="btn" href="#werk">Bekijk mijn werk</a>
       <p class="meta-line" id="meta-line"></p>
@@ -210,22 +222,12 @@
       <div class="grid" id="grid"></div>
     </div>
   </section>
-
-  <section id="contact" style="padding-top:0;">
-    <div class="reveal">
-      <h2>Contact</h2>
-      <p style="margin-top:12px; color:var(--ink-soft);">
-        Vragen over een print of een eigen idee? Stuur gerust een bericht via
-        <a href="mailto:dieter@benoot.be">dieter@benoot.be</a>.
-      </p>
-    </div>
-  </section>
 </main>
 
 <footer class="site">
   <div class="inner">
     <span>© <span id="year"></span> Dieter Benoot</span>
-    <span>benoot.be</span>
+    <span>benoot.be — in opbouw</span>
   </div>
 </footer>
 
