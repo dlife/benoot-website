@@ -385,16 +385,20 @@ function initGallery(PRINTS) {
     "Laatste print: <b>" + last.titel + "</b> — " + daysAgo(last.datum) +
     " dagen geleden · <b>" + PRINTS.length + "</b> stukken in de galerij";
 
+  var modelsForViewer = PRINTS.filter(function (p) { return p.model; }).map(function (p) {
+    return {
+      id: p.id,
+      titel: p.titel,
+      url: p.model,
+      bestand: p.model.split("/").pop(),
+      omschrijving: p.omschrijving
+    };
+  });
   if (window.DV) {
-    window.DV.setModels(PRINTS.filter(function (p) { return p.model; }).map(function (p) {
-      return {
-        id: p.id,
-        titel: p.titel,
-        url: p.model,
-        bestand: p.model.split("/").pop(),
-        omschrijving: p.omschrijving
-      };
-    }));
+    window.DV.setModels(modelsForViewer);
+  } else {
+    /* viewer-module nog niet geladen: bewaar voor later */
+    window.__MODELS = modelsForViewer;
   }
 }
 
@@ -578,6 +582,12 @@ import { STLLoader } from "three/addons/loaders/STLLoader.js";
       }
     }
   };
+
+  /* als de galerij-data eerder klaar was dan dit script: nu alsnog laden */
+  if (window.__MODELS) {
+    setModels(window.__MODELS);
+    window.__MODELS = null;
+  }
 
   (function animate() {
     requestAnimationFrame(animate);
