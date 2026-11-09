@@ -1,0 +1,37 @@
+{
+  "keukenrolhouder": {
+    "titel": "Keukenrolhouder",
+    "omschrijving": "Wandhouder voor keukenrollen met afneembare klep, gedrukt in PETG.",
+    "categorie": "functioneel",
+    "materiaal": "PETG",
+    "printtijd": 6.5
+  },
+  "AlchemyLab": {
+    "titel": "Alchemy Lab",
+    "categorie": "decoratief"
+  },
+  "BasketterPortret": {
+    "titel": "Basketter-portret",
+    "categorie": "decoratief"
+  },
+  "Batterij_deksel_mini": {
+    "titel": "Batterijdeksel Mini",
+    "omschrijving": "Vervangend deksel voor de batterij van de classic Mini.",
+    "categorie": "functioneel"
+  },
+  "HalloweenHouseDonker": {
+    "titel": "Halloweenhuis (donker)",
+    "categorie": "decoratief"
+  },
+  "OmvormerKoeling": {
+    "titel": "Omvormer-koeling",
+    "categorie": "functioneel"
+  },
+  "OmvormerKoeling2": {
+    "titel": "Omvormer-koeling v2",
+    "categorie": "functioneel"
+  },
+  "Dieter Benoot": {
+    "verborgen": true
+  }
+}

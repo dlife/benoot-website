@@ -61,13 +61,15 @@ foreach ($images as $image) {
     $id = pathinfo($image, PATHINFO_FILENAME);
     $meta = $captions[$id] ?? [];
 
+    if (!empty($meta['verborgen'])) continue; // bv. portret, geen print
+
     $prints[] = [
         'id'           => $id,
         'titel'        => $meta['titel'] ?? titleFromFile($image),
         'omschrijving' => $meta['omschrijving'] ?? '',
         'categorie'    => $meta['categorie'] ?? 'functioneel',
-        'afbeelding'   => 'web_images/' . $image,
-        'video'        => isset($videoByName[$id]) ? 'web_videos/' . $videoByName[$id] : null,
+        'afbeelding'   => 'web_images/' . rawurlencode($image),
+        'video'        => isset($videoByName[$id]) ? 'web_videos/' . rawurlencode($videoByName[$id]) : null,
         'materiaal'    => $meta['materiaal'] ?? 'PLA',
         'printtijd'    => $meta['printtijd'] ?? null,
         'datum'        => date('Y-m-d', isset($meta['datum']) ? strtotime($meta['datum']) : filemtime(IMAGE_DIR . $image)),
@@ -77,26 +79,28 @@ foreach ($images as $image) {
 $imageIds = array_column($prints, 'id');
 foreach ($videos as $video) {
     $id = pathinfo($video, PATHINFO_FILENAME);
-    if (!in_array($id, $imageIds, true)) {
-        $meta = $captions[$id] ?? [];
-        $prints[] = [
-            'id'           => $id,
-            'titel'        => $meta['titel'] ?? titleFromFile($video),
-            'omschrijving' => $meta['omschrijving'] ?? '',
-            'categorie'    => $meta['categorie'] ?? 'functioneel',
-            'afbeelding'   => null,
-            'video'        => 'web_videos/' . $video,
-            'materiaal'    => $meta['materiaal'] ?? 'PLA',
-            'printtijd'    => $meta['printtijd'] ?? null,
-            'datum'        => date('Y-m-d', filemtime(VIDEO_DIR . $video)),
-        ];
-    }
+    if (in_array($id, $imageIds, true)) continue;
+    $meta = $captions[$id] ?? [];
+    if (!empty($meta['verborgen'])) continue;
+
+    $prints[] = [
+        'id'           => $id,
+        'titel'        => $meta['titel'] ?? titleFromFile($video),
+        'omschrijving' => $meta['omschrijving'] ?? '',
+        'categorie'    => $meta['categorie'] ?? 'functioneel',
+        'afbeelding'   => null,
+        'video'        => 'web_videos/' . rawurlencode($video),
+        'materiaal'    => $meta['materiaal'] ?? 'PLA',
+        'printtijd'    => $meta['printtijd'] ?? null,
+        'datum'        => date('Y-m-d', filemtime(VIDEO_DIR . $video)),
+    ];
 }
 
 echo json_encode($prints, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 
 /* ===========================================================================
  * OPTIONELE METADATA: captions.json (naast prints.php)
+ * Sleutel = bestandsnaam zonder extensie. Alle velden optioneel.
  * {
  *   "keukenrolhouder": {
  *     "titel": "Keukenrolhouder",
@@ -104,8 +108,10 @@ echo json_encode($prints, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
  *     "categorie": "functioneel",
  *     "materiaal": "PETG",
  *     "printtijd": 6.5,
- *     "datum": "2026-10-20"
- *   }
+ *     "datum": "2026-10-20",
+ *     "verborgen": false
+ *   },
+ *   "Dieter Benoot": { "verborgen": true }
  * }
- * Alle velden zijn optioneel; ontbrekende vullen zich automatisch aan.
+ * "verborgen": true laat een bestand (bv. een portret) buiten de galerij.
  * =========================================================================== */
