@@ -218,6 +218,7 @@
       </p>
       <a class="btn" href="#werk">Bekijk mijn werk</a>
       <p class="meta-line" id="meta-line"></p>
+      <p class="meta-line" id="laatst-geprint" style="display:none; margin-top:10px;"></p>
     </div>
     <div class="hero-media reveal">
       <video muted loop playsinline preload="metadata" controls
@@ -455,6 +456,40 @@ function closeLightbox() {
 document.getElementById("lb-close").addEventListener("click", closeLightbox);
 lb.addEventListener("click", function (e) { if (e.target === lb) closeLightbox(); });
 document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeLightbox(); });
+
+
+/* Laatst geprint: live gegevens per printer (HA-webhook -> laatst_geprint.json) */
+(function () {
+  fetch("laatst_geprint.json")
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) {
+      if (!d) return;
+      var el = document.getElementById("laatst-geprint");
+      if (!el) return;
+      var volgorde = ["h2c", "x2d", "x2d_kobe"];
+      var namen = { h2c: "H2C", x2d: "X2D", x2d_kobe: "X2D Kobe" };
+      var stuk = [];
+      volgorde.forEach(function (k) {
+        var p = d[k];
+        if (!p || !p.taak) return;
+        var taak = p.taak.replace(/\.gcode(\.gcode)?$/i, "").replace(/_/g, " ");
+        var t = p.einde ? new Date(p.einde) : null;
+        var wanneer = "";
+        if (t && !isNaN(t)) {
+          var tijd = t.toLocaleTimeString("nl-BE", { hour: "2-digit", minute: "2-digit" });
+          wanneer = t.toDateString() === new Date().toDateString()
+            ? "vandaag om " + tijd
+            : t.toLocaleDateString("nl-BE", { day: "numeric", month: "short" }) + " om " + tijd;
+        }
+        stuk.push("<b>" + namen[k] + "</b>: " + taak +
+          (p.gewicht ? " (" + p.gewicht + " g)" : "") + (wanneer ? " · " + wanneer : ""));
+      });
+      if (!stuk.length) return;
+      el.innerHTML = "Laatst geprint — " + stuk.join(" · ");
+      el.style.display = "";
+    })
+    .catch(function () {});
+})();
 
 /* Scroll-reveal */
 (function () {
