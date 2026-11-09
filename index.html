@@ -22,12 +22,7 @@
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
-  body {
-    font-family: var(--sans);
-    background: var(--bg);
-    color: var(--ink);
-    line-height: 1.65;
-  }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.65; }
   h1, h2, h3 { font-family: var(--serif); font-weight: 600; letter-spacing: -.01em; }
   a { color: var(--terra-deep); }
   img { max-width: 100%; display: block; }
@@ -99,9 +94,7 @@
   }
   .filter-btn .count { opacity: .7; font-size: .82rem; margin-left: 4px; }
 
-  .grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 22px;
-  }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 22px; }
   .card {
     background: var(--cream); border-radius: var(--radius); overflow: hidden;
     box-shadow: var(--shadow); cursor: pointer; border: 1px solid rgba(229, 216, 202, .6);
@@ -110,7 +103,8 @@
   }
   .card:hover, .card:focus-visible { transform: translateY(-4px); box-shadow: var(--shadow-lift); outline: none; border-color: var(--terra); }
   .card .thumb { aspect-ratio: 4/3; background: var(--bg-soft); overflow: hidden; position: relative; }
-  .card .thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+  .card .thumb img, .card .thumb video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .card .thumb img { transition: transform .5s ease; }
   .card:hover .thumb img { transform: scale(1.05); }
   .card .thumb .cat-chip {
     position: absolute; top: 10px; left: 10px;
@@ -194,7 +188,6 @@
     </div>
     <div class="hero-media reveal">
       <video muted loop playsinline preload="metadata" controls
-             poster="web_images/keukenrolhouder.jpg"
              src="web_videos/keukenrolhouder.mp4"></video>
     </div>
   </div>
@@ -246,65 +239,37 @@
 
 <script>
 /* ============================================================
-   DATA-LAAG (dynamisch)
-   De galerij wordt opgehaald uit prints.php, dat automatisch de
-   mappen web_images/ en web_videos/ op de NAS scant.
-   Nieuwe print toevoegen = foto in web_images/ droppen. Klaar.
-   Werkt prints.php niet (bv. zonder PHP), dan valt de site terug
-   op onderstaande ingebouwde data.
+   DATA-LAAG (dynamisch, met terugvalopties in volgorde):
+   1. prints.php  — PHP scant automatisch web_images/ + web_videos/
+                    (werkt zodra PHP in Web Station is ingeschakeld;
+                    dan verschijnt een nieuwe foto automatisch!)
+   2. prints.json — statische lijst, handig bij te houden via GitHub
+   3. ingebouwde data hieronder — laatste redmiddel
    ============================================================ */
 const FALLBACK_PRINTS = [
-  {
-    id: "keukenrolhouder",
-    titel: "Keukenrolhouder",
-    omschrijving: "Wandhouder voor keukenrollen met afneembare klep, gedrukt in PETG voor wat vochtbestendigheid.",
-    categorie: "functioneel",
-    afbeelding: "web_images/keukenrolhouder.jpg",
-    video: "web_videos/keukenrolhouder.mp4",
-    materiaal: "PETG",
-    printtijd: 6.5,
-    datum: "2026-10-20"
-  },
-  {
-    id: "kabelgoot",
-    titel: "Kabelgoot voor bureau",
-    omschrijving: "Op maat gemaakte kabelgoot die aan de onderkant van mijn bureau klikt, met clips per kabel.",
-    categorie: "functioneel",
-    afbeelding: "web_images/kabelgoot.jpg",
-    materiaal: "PLA",
-    printtijd: 3.2,
-    datum: "2026-10-02"
-  },
-  {
-    id: "vaas-relief",
-    titel: "Reliefvaas",
-    omschrijving: "Decoratieve vaas met golvend reliëfpatroon, geprint in cascade groen met zijglans afwerking.",
-    categorie: "decoratief",
-    afbeelding: "web_images/vaas.jpg",
-    materiaal: "PLA Silk",
-    printtijd: 9.0,
-    datum: "2026-09-18"
-  },
-  {
-    id: "hondenspeelgoed",
-    titel: "Speelbal-houder voor Kim",
-    omschrijving: "Verstelbare houder voor speelballen, op vraag getest en goedgekeurd door Superhond.",
-    categorie: "opdracht",
-    afbeelding: "web_images/speelbal.jpg",
-    materiaal: "PETG",
-    printtijd: 4.1,
-    datum: "2026-08-30"
-  },
-  {
-    id: "ladescheider",
-    titel: "Ladescheiders",
-    omschrijving: "Modulaire tussenwanden voor de keukenlade, klikbaar systeem in drie hoogtes.",
-    categorie: "functioneel",
-    afbeelding: "web_images/ladescheider.jpg",
-    materiaal: "PLA",
-    printtijd: 2.7,
-    datum: "2026-08-11"
-  }
+  { id: "keukenrolhouder", titel: "Keukenrolhouder",
+    omschrijving: "Wandhouder voor keukenrollen met afneembare klep, gedrukt in PETG.",
+    categorie: "functioneel", afbeelding: null, video: "web_videos/keukenrolhouder.mp4",
+    materiaal: "PETG", printtijd: 6.5, datum: "2026-10-26" },
+  { id: "AlchemyLab", titel: "Alchemy Lab", omschrijving: "",
+    categorie: "decoratief", afbeelding: "web_images/AlchemyLab.jpeg", video: null,
+    materiaal: "PLA", printtijd: null, datum: "2026-10-29" },
+  { id: "Batterij_deksel_mini", titel: "Batterijdeksel Mini",
+    omschrijving: "Vervangend deksel voor de batterij van de classic Mini.",
+    categorie: "functioneel", afbeelding: "web_images/Batterij_deksel_mini.jpeg", video: null,
+    materiaal: "PLA", printtijd: null, datum: "2026-10-26" },
+  { id: "HalloweenHouseDonker", titel: "Halloweenhuis (donker)", omschrijving: "",
+    categorie: "decoratief", afbeelding: "web_images/HalloweenHouseDonker.jpeg", video: null,
+    materiaal: "PLA", printtijd: null, datum: "2026-10-26" },
+  { id: "OmvormerKoeling", titel: "Omvormer-koeling", omschrijving: "",
+    categorie: "functioneel", afbeelding: "web_images/OmvormerKoeling.jpeg", video: null,
+    materiaal: "PLA", printtijd: null, datum: "2026-10-26" },
+  { id: "OmvormerKoeling2", titel: "Omvormer-koeling v2", omschrijving: "",
+    categorie: "functioneel", afbeelding: "web_images/OmvormerKoeling2.jpeg", video: null,
+    materiaal: "PLA", printtijd: null, datum: "2026-10-26" },
+  { id: "BasketterPortret", titel: "Basketter-portret", omschrijving: "",
+    categorie: "decoratief", afbeelding: "web_images/BasketterPortret.jpeg", video: null,
+    materiaal: "PLA", printtijd: null, datum: "2026-10-26" }
 ];
 
 const grid = document.getElementById("grid");
@@ -314,13 +279,13 @@ function daysAgo(dateStr) {
   return Math.max(0, Math.round((Date.now() - new Date(dateStr)) / 86400000));
 }
 function specHtml(p) {
-  return "<span><b>" + p.materiaal + "</b></span>" +
-         "<span><b>" + p.printtijd + "</b> u print</span>" +
-         "<span><b>" + daysAgo(p.datum) + "</b> dagen geleden</span>";
+  var parts = ["<span><b>" + p.materiaal + "</b></span>"];
+  if (p.printtijd != null) parts.push("<span><b>" + p.printtijd + "</b> u print</span>");
+  parts.push("<span><b>" + daysAgo(p.datum) + "</b> dagen geleden</span>");
+  return parts.join("");
 }
 
 function initGallery(PRINTS) {
-  /* Filters */
   var CATS = ["alles"].concat(Array.from(new Set(PRINTS.map(function (p) { return p.categorie; }))));
   CATS.forEach(function (cat) {
     var count = cat === "alles" ? PRINTS.length : PRINTS.filter(function (p) { return p.categorie === cat; }).length;
@@ -331,14 +296,12 @@ function initGallery(PRINTS) {
     btn.addEventListener("click", function () {
       filtersEl.querySelectorAll(".filter-btn").forEach(function (b) { b.setAttribute("aria-pressed", b === btn); });
       document.querySelectorAll(".card").forEach(function (c) {
-        var show = cat === "alles" || c.dataset.cat === cat;
-        c.classList.toggle("hidden", !show);
+        c.classList.toggle("hidden", !(cat === "alles" || c.dataset.cat === cat));
       });
     });
     filtersEl.appendChild(btn);
   });
 
-  /* Kaarten */
   PRINTS.forEach(function (p) {
     var card = document.createElement("article");
     card.className = "card";
@@ -364,7 +327,6 @@ function initGallery(PRINTS) {
     grid.appendChild(card);
   });
 
-  /* Meta-regel onder hero */
   var sorted = PRINTS.slice().sort(function (a, b) { return b.datum.localeCompare(a.datum); });
   var last = sorted[0];
   document.getElementById("meta-line").innerHTML =
@@ -372,9 +334,13 @@ function initGallery(PRINTS) {
     " dagen geleden · <b>" + PRINTS.length + "</b> stukken in de galerij";
 }
 
-/* Dynamisch ophalen, met fallback */
+/* Dynamisch ophalen: prints.php -> prints.json -> ingebouwd */
 fetch("prints.php")
-  .then(function (r) { if (!r.ok) throw new Error("prints.php niet beschikbaar"); return r.json(); })
+  .then(function (r) { if (!r.ok) throw new Error("php uit"); return r.json(); })
+  .catch(function () {
+    return fetch("prints.json")
+      .then(function (r) { if (!r.ok) throw new Error("geen json"); return r.json(); });
+  })
   .then(initGallery)
   .catch(function () { initGallery(FALLBACK_PRINTS); });
 
