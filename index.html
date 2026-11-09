@@ -161,6 +161,14 @@
     background: var(--cream); position: relative; aspect-ratio: 16/10;
   }
   #stl-viewer canvas { display: block; width: 100%; height: 100%; }
+  .model-ph {
+    width: 100%; height: 100%; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 6px;
+    background: linear-gradient(135deg, #f3e9de, #e9d5c3);
+    color: var(--terra-deep); font-weight: 600;
+  }
+  .model-ph span { font-size: 1.5rem; }
+  .model-ph small { color: var(--ink-soft); font-weight: 400; }
   .viewer-hint { font-size: .85rem; color: var(--ink-soft); margin-top: 12px; }
 
   footer.site { border-top: 1px solid var(--line); background: var(--bg-soft); }
@@ -234,11 +242,15 @@
     <div class="reveal">
       <h2>Draai zelf aan het model</h2>
       <p style="margin-top:12px; color:var(--ink-soft);">
-        Dit dagplanning-mandje (hex ribbed) kun je hier in 3D bekijken:
+        Kies een object en bekijk het in 3D:
         sleep met de muis om te draaien, scroll om te zoomen.
       </p>
+      <div style="display:flex; align-items:center; gap:12px; margin-top:20px; flex-wrap:wrap;">
+        <label for="model-select" style="font-size:.9rem; color:var(--ink-soft);">Object:</label>
+        <select id="model-select" style="padding:8px 14px; border-radius:999px; border:1px solid var(--line); background:var(--cream); font-family:var(--sans); font-size:.92rem; color:var(--ink);"></select>
+      </div>
       <div id="stl-viewer" style="margin-top:24px;"></div>
-      <p class="viewer-hint">Model: Dagplanning 3.stl — geprint in PLA op de Bambu Lab.</p>
+      <p class="viewer-hint" id="viewer-hint"></p>
     </div>
   </section>
 </main>
@@ -290,7 +302,12 @@ const FALLBACK_PRINTS = [
     materiaal: "PLA", printtijd: null, datum: "2026-10-26" },
   { id: "BasketterPortret", titel: "Basketter-portret", omschrijving: "",
     categorie: "decoratief", afbeelding: "web_images/BasketterPortret.jpeg", video: null,
-    materiaal: "PLA", printtijd: null, datum: "2026-10-26" }
+    materiaal: "PLA", printtijd: null, datum: "2026-10-26" },
+  { id: "Dagplanning 3", titel: "Dagplanning-mandje (hex ribbed)",
+    omschrijving: "Mandje voor de schooldagplanning, gegenereerd met de universal basket generator.",
+    categorie: "functioneel", afbeelding: null, video: null,
+    model: "web_images/Dagplanning 3.stl",
+    materiaal: "PLA", printtijd: null, datum: "2026-11-08" }
 ];
 
 const grid = document.getElementById("grid");
@@ -328,9 +345,16 @@ function initGallery(PRINTS) {
     card.className = "card";
     card.dataset.cat = p.categorie;
     card.tabIndex = 0;
-    var media = p.video
-      ? '<video src="' + p.video + '" muted loop playsinline preload="metadata" controls></video>'
-      : '<img src="' + p.afbeelding + '" alt="' + p.titel + '" loading="lazy" />';
+    var media;
+    if (p.video) {
+      media = '<video src="' + p.video + '" muted loop playsinline preload="metadata" controls></video>';
+    } else if (p.afbeelding) {
+      media = '<img src="' + p.afbeelding + '" alt="' + p.titel + '" loading="lazy" />';
+    } else if (p.model) {
+      media = '<div class="model-ph"><span>📐 3D-model</span><small>tik om te bekijken</small></div>';
+    } else {
+      media = "";
+    }
     card.innerHTML =
       '<div class="thumb">' + media +
         '<span class="cat-chip">' + p.categorie + "</span>" +
@@ -341,9 +365,16 @@ function initGallery(PRINTS) {
         '<p class="desc">' + (p.omschrijving || "") + "</p>" +
         '<div class="specs">' + specHtml(p) + "</div>" +
       "</div>";
-    card.addEventListener("click", function () { openLightbox(p); });
+    card.addEventListener("click", function () {
+      if (!p.video && !p.afbeelding && p.model) showInViewer(p);
+      else openLightbox(p);
+    });
     card.addEventListener("keydown", function (e) {
-      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLightbox(p); }
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        if (!p.video && !p.afbeelding && p.model) showInViewer(p);
+        else openLightbox(p);
+      }
     });
     grid.appendChild(card);
   });
@@ -353,6 +384,25 @@ function initGallery(PRINTS) {
   document.getElementById("meta-line").innerHTML =
     "Laatste print: <b>" + last.titel + "</b> — " + daysAgo(last.datum) +
     " dagen geleden · <b>" + PRINTS.length + "</b> stukken in de galerij";
+
+  if (window.DV) {
+    window.DV.setModels(PRINTS.filter(function (p) { return p.model; }).map(function (p) {
+      return {
+        id: p.id,
+        titel: p.titel,
+        url: p.model,
+        bestand: p.model.split("/").pop(),
+        omschrijving: p.omschrijving
+      };
+    }));
+  }
+}
+
+function showInViewer(p) {
+  if (window.DV) {
+    window.DV.show(p.id);
+    document.getElementById("viewer").scrollIntoView({ behavior: "smooth" });
+  }
 }
 
 /* Dynamisch ophalen: prints.php -> prints.json -> ingebouwd */
@@ -445,36 +495,96 @@ import { STLLoader } from "three/addons/loaders/STLLoader.js";
   window.addEventListener("resize", fit);
   fit();
 
-  new STLLoader().load(
-    "/web_images/Dagplanning%203.stl",
-    function (geom) {
-      geom.computeVertexNormals();
-      var mesh = new THREE.Mesh(
-        geom,
-        new THREE.MeshStandardMaterial({ color: 0xf59f6e, roughness: 0.55, metalness: 0.05 })
-      );
-      var box = new THREE.Box3().setFromObject(mesh);
-      var size = box.getSize(new THREE.Vector3());
-      var center = box.getCenter(new THREE.Vector3());
-      mesh.position.sub(center);
-      scene.add(mesh);
-      var maxDim = Math.max(size.x, size.y, size.z);
-      var dist = maxDim * 1.9;
-      camera.position.set(dist * 0.35, dist * 0.45, dist);
-      controls.update();
-    },
-    undefined,
-    function (err) {
-      container.innerHTML = '<p style="padding:24px;color:#6f5f56">Het 3D-model kon niet geladen worden.</p>';
-      console.error(err);
+  var currentMesh = null;
+  var select = document.getElementById("model-select");
+  var hint = document.getElementById("viewer-hint");
+  var models = [];
+
+  function disposeCurrent() {
+    if (currentMesh) {
+      scene.remove(currentMesh);
+      currentMesh.geometry.dispose();
+      currentMesh.material.dispose();
+      currentMesh = null;
     }
-  );
+  }
+
+  function loadModel(m) {
+    disposeCurrent();
+    if (hint) hint.textContent = "Laden: " + m.bestand + " ...";
+    new STLLoader().load(
+      m.url,
+      function (geom) {
+        geom.computeVertexNormals();
+        var mesh = new THREE.Mesh(
+          geom,
+          new THREE.MeshStandardMaterial({ color: 0xf59f6e, roughness: 0.55, metalness: 0.05 })
+        );
+        var box = new THREE.Box3().setFromObject(mesh);
+        var size = box.getSize(new THREE.Vector3());
+        var center = box.getCenter(new THREE.Vector3());
+        mesh.position.sub(center);
+        scene.add(mesh);
+        currentMesh = mesh;
+        var maxDim = Math.max(size.x, size.y, size.z);
+        var dist = maxDim * 1.9;
+        camera.position.set(dist * 0.35, dist * 0.45, dist);
+        controls.update();
+        if (hint) hint.textContent = "Model: " + m.bestand + (m.omschrijving ? " — " + m.omschrijving : "");
+      },
+      undefined,
+      function (err) {
+        if (hint) hint.textContent = "Het 3D-model kon niet geladen worden.";
+        console.error(err);
+      }
+    );
+  }
+
+  function setModels(list) {
+    models = list || [];
+    if (!select) return;
+    select.innerHTML = "";
+    models.forEach(function (m, i) {
+      var opt = document.createElement("option");
+      opt.value = String(i);
+      opt.textContent = m.titel;
+      select.appendChild(opt);
+    });
+    if (models.length) {
+      select.disabled = false;
+      loadModel(models[0]);
+    } else {
+      select.disabled = true;
+      if (hint) hint.textContent = "Nog geen 3D-modellen gevonden.";
+    }
+  }
+
+  if (select) {
+    select.addEventListener("change", function () {
+      var m = models[parseInt(select.value, 10)];
+      if (m) loadModel(m);
+    });
+  }
+
+  window.DV = {
+    setModels: setModels,
+    show: function (id) {
+      for (var k = 0; k < models.length; k++) {
+        if (models[k].id === id) {
+          select.value = String(k);
+          loadModel(models[k]);
+          return;
+        }
+      }
+    }
+  };
 
   (function animate() {
     requestAnimationFrame(animate);
     controls.update();
     renderer.render(scene, camera);
   })();
+})();
 })();
 </script>
 </body>

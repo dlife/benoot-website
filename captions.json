@@ -31,6 +31,11 @@
     "titel": "Omvormer-koeling v2",
     "categorie": "functioneel"
   },
+  "Dagplanning 3": {
+    "titel": "Dagplanning-mandje (hex ribbed)",
+    "omschrijving": "Mandje voor de schooldagplanning, gegenereerd met de universal basket generator.",
+    "categorie": "functioneel"
+  },
   "Dieter Benoot": {
     "verborgen": true
   },

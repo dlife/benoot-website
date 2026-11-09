@@ -6,6 +6,7 @@
     "categorie": "functioneel",
     "afbeelding": null,
     "video": "web_videos/keukenrolhouder.mp4",
+    "model": null,
     "materiaal": "PETG",
     "printtijd": 6.5,
     "datum": "2026-10-26"
@@ -17,6 +18,7 @@
     "categorie": "decoratief",
     "afbeelding": "web_images/AlchemyLab.jpeg",
     "video": null,
+    "model": null,
     "materiaal": "PLA",
     "printtijd": null,
     "datum": "2026-10-29"
@@ -28,6 +30,7 @@
     "categorie": "functioneel",
     "afbeelding": "web_images/Batterij_deksel_mini.jpeg",
     "video": null,
+    "model": null,
     "materiaal": "PLA",
     "printtijd": null,
     "datum": "2026-10-26"
@@ -39,6 +42,7 @@
     "categorie": "decoratief",
     "afbeelding": "web_images/HalloweenHouseDonker.jpeg",
     "video": null,
+    "model": null,
     "materiaal": "PLA",
     "printtijd": null,
     "datum": "2026-10-26"
@@ -50,6 +54,7 @@
     "categorie": "functioneel",
     "afbeelding": "web_images/OmvormerKoeling.jpeg",
     "video": null,
+    "model": null,
     "materiaal": "PLA",
     "printtijd": null,
     "datum": "2026-10-26"
@@ -61,6 +66,7 @@
     "categorie": "functioneel",
     "afbeelding": "web_images/OmvormerKoeling2.jpeg",
     "video": null,
+    "model": null,
     "materiaal": "PLA",
     "printtijd": null,
     "datum": "2026-10-26"
@@ -72,8 +78,21 @@
     "categorie": "decoratief",
     "afbeelding": "web_images/BasketterPortret.jpeg",
     "video": null,
+    "model": null,
     "materiaal": "PLA",
     "printtijd": null,
     "datum": "2026-10-26"
+  },
+  {
+    "id": "Dagplanning 3",
+    "titel": "Dagplanning-mandje (hex ribbed)",
+    "omschrijving": "Mandje voor de schooldagplanning, gegenereerd met de universal basket generator.",
+    "categorie": "functioneel",
+    "afbeelding": null,
+    "video": null,
+    "model": "web_images/Dagplanning 3.stl",
+    "materiaal": "PLA",
+    "printtijd": null,
+    "datum": "2026-11-08"
   }
 ]
