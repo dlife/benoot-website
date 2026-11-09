@@ -36,6 +36,17 @@
     "omschrijving": "Mandje voor de schooldagplanning, gegenereerd met de universal basket generator.",
     "categorie": "functioneel"
   },
+  "BatteryLidMini": {
+    "titel": "Batterijdeksel Mini (3D-model)",
+    "omschrijving": "Afdekplaat voor de batterijkuip in de kofferbak van de classic Mini, volledig parametrisch FreeCAD-ontwerp.",
+    "categorie": "functioneel",
+    "materiaal": "ASA"
+  },
+  "BuckConverterCase": {
+    "titel": "Buckconverter-behuizing",
+    "omschrijving": "Behuizing voor een buckconverter, ontworpen in FreeCAD.",
+    "categorie": "functioneel"
+  },
   "Dieter Benoot": {
     "verborgen": true
   },
