@@ -40,7 +40,11 @@ function titleFromFile(string $filename): string
 {
     $base = pathinfo($filename, PATHINFO_FILENAME);
     $base = preg_replace('/[-_]+/', ' ', $base);
-    return mb_convert_case(trim($base), MB_CASE_TITLE, 'UTF-8');
+    $base = trim($base);
+    if (function_exists('mb_convert_case')) {
+        return mb_convert_case($base, MB_CASE_TITLE, 'UTF-8');
+    }
+    return ucwords($base); // fallback zonder mbstring-extensie
 }
 
 function collectModels(): array
