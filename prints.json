@@ -1,0 +1,79 @@
+[
+  {
+    "id": "keukenrolhouder",
+    "titel": "Keukenrolhouder",
+    "omschrijving": "Wandhouder voor keukenrollen met afneembare klep, gedrukt in PETG.",
+    "categorie": "functioneel",
+    "afbeelding": null,
+    "video": "web_videos/keukenrolhouder.mp4",
+    "materiaal": "PETG",
+    "printtijd": 6.5,
+    "datum": "2026-10-26"
+  },
+  {
+    "id": "AlchemyLab",
+    "titel": "Alchemy Lab",
+    "omschrijving": "",
+    "categorie": "decoratief",
+    "afbeelding": "web_images/AlchemyLab.jpeg",
+    "video": null,
+    "materiaal": "PLA",
+    "printtijd": null,
+    "datum": "2026-10-29"
+  },
+  {
+    "id": "Batterij_deksel_mini",
+    "titel": "Batterijdeksel Mini",
+    "omschrijving": "Vervangend deksel voor de batterij van de classic Mini.",
+    "categorie": "functioneel",
+    "afbeelding": "web_images/Batterij_deksel_mini.jpeg",
+    "video": null,
+    "materiaal": "PLA",
+    "printtijd": null,
+    "datum": "2026-10-26"
+  },
+  {
+    "id": "HalloweenHouseDonker",
+    "titel": "Halloweenhuis (donker)",
+    "omschrijving": "",
+    "categorie": "decoratief",
+    "afbeelding": "web_images/HalloweenHouseDonker.jpeg",
+    "video": null,
+    "materiaal": "PLA",
+    "printtijd": null,
+    "datum": "2026-10-26"
+  },
+  {
+    "id": "OmvormerKoeling",
+    "titel": "Omvormer-koeling",
+    "omschrijving": "",
+    "categorie": "functioneel",
+    "afbeelding": "web_images/OmvormerKoeling.jpeg",
+    "video": null,
+    "materiaal": "PLA",
+    "printtijd": null,
+    "datum": "2026-10-26"
+  },
+  {
+    "id": "OmvormerKoeling2",
+    "titel": "Omvormer-koeling v2",
+    "omschrijving": "",
+    "categorie": "functioneel",
+    "afbeelding": "web_images/OmvormerKoeling2.jpeg",
+    "video": null,
+    "materiaal": "PLA",
+    "printtijd": null,
+    "datum": "2026-10-26"
+  },
+  {
+    "id": "BasketterPortret",
+    "titel": "Basketter-portret",
+    "omschrijving": "",
+    "categorie": "decoratief",
+    "afbeelding": "web_images/BasketterPortret.jpeg",
+    "video": null,
+    "materiaal": "PLA",
+    "printtijd": null,
+    "datum": "2026-10-26"
+  }
+]
