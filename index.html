@@ -26,7 +26,16 @@
   h1, h2, h3 { font-family: var(--serif); font-weight: 600; letter-spacing: -.01em; }
   a { color: var(--terra-deep); }
   img { max-width: 100%; display: block; }
-  section { max-width: 1080px; margin: 0 auto; padding: 72px 24px; }
+  section { max-width: 1080px; margin: 0 auto; padding: 88px 24px; }
+  .sec-kicker {
+    display: block; font-size: .78rem; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--terra-deep); margin-bottom: 10px; font-weight: 600;
+  }
+  section h2 { font-size: clamp(1.7rem, 3vw, 2.3rem); }
+  .sec-lead { margin-top: 14px; color: var(--ink-soft); max-width: 46rem; font-size: 1.04rem; }
+  .stats { display: flex; gap: 48px; margin-top: 34px; flex-wrap: wrap; }
+  .stats .stat b { display: block; font-family: var(--serif); font-size: 2rem; color: var(--terra-deep); line-height: 1.2; }
+  .stats .stat span { font-size: .86rem; color: var(--ink-soft); }
 
   .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
   .reveal.in { opacity: 1; transform: none; }
@@ -94,7 +103,24 @@
   }
   .filter-btn .count { opacity: .7; font-size: .82rem; margin-left: 4px; }
 
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 22px; }
+  /* Werk-sectie: kop gecentreerd, galerij full-bleed doorscrollbaar */
+  .werk-head { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+  .werk-bar { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 26px; }
+  .rail {
+    display: flex; gap: 24px; overflow-x: auto; overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    padding: 10px max(24px, calc(50vw - 516px)) 30px;
+    scrollbar-width: none;
+  }
+  .rail::-webkit-scrollbar { display: none; }
+  .rail .card { flex: 0 0 min(340px, 80vw); scroll-snap-align: start; }
+  .rail-nav { display: flex; gap: 10px; }
+  .rail-btn {
+    width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--line);
+    background: var(--cream); color: var(--terra-deep); font-size: 1.35rem; cursor: pointer; line-height: 1;
+    transition: all .2s ease; box-shadow: var(--shadow);
+  }
+  .rail-btn:hover, .rail-btn:focus-visible { background: var(--terra); color: var(--cream); border-color: var(--terra); outline: none; }
   .card {
     background: var(--cream); border-radius: var(--radius); overflow: hidden;
     box-shadow: var(--shadow); cursor: pointer; border: 1px solid rgba(229, 216, 202, .6);
@@ -187,6 +213,9 @@
     .hero { grid-template-columns: 1fr; padding-top: 56px; }
     .hero-media { order: -1; }
     section { padding: 52px 20px; }
+    .werk-head { padding: 52px 20px 0; }
+    .rail { padding: 10px 20px 26px; }
+    .stats { gap: 28px; }
   }
 </style>
 </head>
@@ -228,26 +257,36 @@
 
   <section id="over">
     <div class="reveal">
-      <h2>Over mij &amp; mijn prints</h2>
-      <p style="margin-top:14px; max-width:46rem; color:var(--ink-soft);">
-        Ik print vooral met PLA en PETG op mijn Bambu Lab, meestal ontwerpen die ik zelf
-        maak of aanpas aan een concrete behoefte thuis. Elk stuk in de galerij komt met
-        materiaal en printtijd, zodat je een eerlijk beeld krijgt.
+      <span class="sec-kicker">Over mij</span>
+      <h2>Van idee tot gedrukt stuk</h2>
+      <p class="sec-lead">
+        Ik print vooral met PLA, PETG en ASA op mijn Bambu Lab-printers, meestal ontwerpen
+        die ik zelf maak of aanpas aan een concrete behoefte thuis. Elk stuk in de galerij
+        komt met materiaal en printtijd, zodat je een eerlijk beeld krijgt.
       </p>
+      <div class="stats" id="stats"></div>
     </div>
   </section>
 
-  <section id="werk" style="padding-top:0;">
-    <div class="reveal">
-      <h2>Recent werk</h2>
-      <div class="filters" id="filters" role="group" aria-label="Filter galerij"></div>
-      <div class="grid" id="grid"></div>
+  <section id="werk" style="padding:0; max-width:none;">
+    <div class="werk-head reveal" style="padding-top:88px;">
+      <span class="sec-kicker">Galerij</span>
+      <h2>Recent werk — scroll door</h2>
+      <div class="werk-bar">
+        <div class="filters" id="filters" role="group" aria-label="Filter galerij" style="margin:0;"></div>
+        <div class="rail-nav">
+          <button class="rail-btn" id="rail-prev" aria-label="Scroll terug">&lsaquo;</button>
+          <button class="rail-btn" id="rail-next" aria-label="Scroll verder">&rsaquo;</button>
+        </div>
+      </div>
     </div>
+    <div class="rail" id="grid"></div>
   </section>
   <section id="viewer">
     <div class="reveal">
+      <span class="sec-kicker">Interactief</span>
       <h2>Draai zelf aan het model</h2>
-      <p style="margin-top:12px; color:var(--ink-soft);">
+      <p class="sec-lead" style="margin-top:12px;">
         Kies een object en bekijk het in 3D:
         sleep met de muis om te draaien, scroll om te zoomen.
       </p>
@@ -389,6 +428,12 @@ function initGallery(PRINTS) {
 
   document.getElementById("meta-line").innerHTML =
     "<b>" + PRINTS.length + "</b> stukken in de galerij";
+  var mats = Array.from(new Set(PRINTS.map(function (p) { return p.materiaal; })));
+  var statsEl = document.getElementById("stats");
+  if (statsEl) statsEl.innerHTML =
+    '<div class="stat"><b>' + PRINTS.length + '</b><span>stukken in de galerij</span></div>' +
+    '<div class="stat"><b>3</b><span>printers in huis</span></div>' +
+    '<div class="stat"><b>' + mats.length + '</b><span>materialen</span></div>';
 
   var modelsForViewer = PRINTS.filter(function (p) { return p.model; }).map(function (p) {
     return {
@@ -487,6 +532,19 @@ document.addEventListener("keydown", function (e) { if (e.key === "Escape") clos
       el.style.display = "";
     })
     .catch(function () {});
+})();
+
+/* Galerij-pijltjes: scroll de rail met twee kaarten per klik */
+(function () {
+  var rail = document.getElementById("grid");
+  var prev = document.getElementById("rail-prev");
+  var next = document.getElementById("rail-next");
+  function step() {
+    var c = rail.querySelector(".card");
+    return c ? c.offsetWidth + 24 : 360;
+  }
+  if (prev) prev.addEventListener("click", function () { rail.scrollBy({ left: -step() * 2, behavior: "smooth" }); });
+  if (next) next.addEventListener("click", function () { rail.scrollBy({ left: step() * 2, behavior: "smooth" }); });
 })();
 
 /* Scroll-reveal */
